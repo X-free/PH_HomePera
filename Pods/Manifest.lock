@@ -1,0 +1,78 @@
+PODS:
+  - AFNetworking (4.0.1):
+    - AFNetworking/NSURLSession (= 4.0.1)
+    - AFNetworking/Reachability (= 4.0.1)
+    - AFNetworking/Security (= 4.0.1)
+    - AFNetworking/Serialization (= 4.0.1)
+    - AFNetworking/UIKit (= 4.0.1)
+  - AFNetworking/NSURLSession (4.0.1):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (4.0.1)
+  - AFNetworking/Security (4.0.1)
+  - AFNetworking/Serialization (4.0.1)
+  - AFNetworking/UIKit (4.0.1):
+    - AFNetworking/NSURLSession
+  - FBAEMKit (18.0.1):
+    - FBSDKCoreKit_Basics (= 18.0.1)
+  - FBSDKCoreKit (18.0.1):
+    - FBAEMKit (= 18.0.1)
+    - FBSDKCoreKit_Basics (= 18.0.1)
+  - FBSDKCoreKit_Basics (18.0.1)
+  - IQKeyboardManager (6.5.19)
+  - MBProgressHUD (1.2.0)
+  - SDWebImage (5.21.0):
+    - SDWebImage/Core (= 5.21.0)
+  - SDWebImage/Core (5.21.0)
+  - SHToast (1.2.1)
+  - YYModel (1.0.4)
+
+DEPENDENCIES:
+  - AFNetworking (from `https://github.com/crasowas/AFNetworking.git`)
+  - FBSDKCoreKit
+  - IQKeyboardManager
+  - MBProgressHUD (from `https://github.com/jdg/MBProgressHUD.git`, commit `18c442d57398cee5ef57f852df10fc5ff65f0763`)
+  - SDWebImage
+  - SHToast
+  - YYModel
+
+SPEC REPOS:
+  trunk:
+    - FBAEMKit
+    - FBSDKCoreKit
+    - FBSDKCoreKit_Basics
+    - IQKeyboardManager
+    - SDWebImage
+    - SHToast
+    - YYModel
+
+EXTERNAL SOURCES:
+  AFNetworking:
+    :git: https://github.com/crasowas/AFNetworking.git
+  MBProgressHUD:
+    :commit: 18c442d57398cee5ef57f852df10fc5ff65f0763
+    :git: https://github.com/jdg/MBProgressHUD.git
+
+CHECKOUT OPTIONS:
+  AFNetworking:
+    :commit: cad86a0bd363f4c65086193addbb004d2c0a7718
+    :git: https://github.com/crasowas/AFNetworking.git
+  MBProgressHUD:
+    :commit: 18c442d57398cee5ef57f852df10fc5ff65f0763
+    :git: https://github.com/jdg/MBProgressHUD.git
+
+SPEC CHECKSUMS:
+  AFNetworking: 1e49f114ce59e7156e35761e03e1087f386689e2
+  FBAEMKit: b2ed182002dbcb65d5a60059c9693d322186cd00
+  FBSDKCoreKit: 7f96852f2539bdb88ba8d47e5ab4ae70a6f8d691
+  FBSDKCoreKit_Basics: 22d4c1a509ded4e45116f3bb167a14907550f62e
+  IQKeyboardManager: c8665b3396bd0b79402b4c573eac345a31c7d485
+  MBProgressHUD: 1b0fb447e80a0fda94808180750e8b78a07b3cd2
+  SDWebImage: f84b0feeb08d2d11e6a9b843cb06d75ebf5b8868
+  SHToast: 34ed309d0e74eed0ce01711a7b0fe2e37b68cba7
+  YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
+
+PODFILE CHECKSUM: 2c0b44a4168eb8d65b45f69fd13f49c8ba1c726f
+
+COCOAPODS: 1.16.2
