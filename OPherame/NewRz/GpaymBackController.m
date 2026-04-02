@@ -54,7 +54,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.title = @"Payment Method";
+    self.title = self.navTitle;
     self.customTitleColor = [UIColor whiteColor];
     UIImage *image = [UIImage imageNamed:@"plobac"];
     UIImageView *backgroundImageView = [[UIImageView alloc] init];

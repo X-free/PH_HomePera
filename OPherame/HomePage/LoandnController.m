@@ -11,7 +11,7 @@
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSArray *dataArray;
 
-
+@property (nonatomic, strong) UIButton *tepmBtn;
 
 @property (nonatomic, strong) UIView *containerView;
 @property (nonatomic, strong) NSArray<UIButton *> *buttons; // 存储所有按钮
@@ -21,6 +21,10 @@
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 
 @property (strong, nonatomic) UIView *emptyView;
+@property (nonatomic, strong) UIImageView *emptyIconView;
+@property (nonatomic, strong) UILabel *emptyTitleLabel;
+@property (nonatomic, strong) UILabel *emptySubtitleLabel;
+@property (nonatomic, strong) UIButton *emptyActionButton;
 @end
 
 @implementation LoandnController
@@ -114,50 +118,55 @@
     [self.view addSubview:backgroundImageView];
     
     
-    self.containerView = [[UIView alloc]initWithFrame:CGRectMake(8, [UIView navigationBarHeight]+[UIView statusBarHeight]+20, self.view.width-16, self.view.height-[UIView navigationBarHeight]-[UIView statusBarHeight]-20-88)];
+    self.containerView = [[UIView alloc]initWithFrame:CGRectMake(8, [UIView navigationBarHeight]+[UIView statusBarHeight]+20 + 70, self.view.width-16, self.view.height-[UIView navigationBarHeight]-[UIView statusBarHeight]-20-88-75)];
     self.containerView.backgroundColor = [UIColor whiteColor];
     self.containerView.layer.cornerRadius = 16;
     [self.view addSubview:self.containerView];
     
-    UIImageView *receiveing = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"wekolmj"]];
-    receiveing.frame = CGRectMake(1, -11, self.containerView.width-96, 41);
-    [self.containerView addSubview:receiveing];
+    UIView *barView = [[UIView alloc] initWithFrame:CGRectMake(self.containerView.left, self.containerView.top - 70, self.containerView.width, 55)];
+    barView.layer.cornerRadius = 16;
+    barView.backgroundColor = UIColor.whiteColor;
+    [self.view addSubview:barView];
     
-    UIImageView *madib = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"wenbuks"]];
-    madib.frame = CGRectMake(receiveing.right-11, -41, self.containerView.width-receiveing.right+6, 90);
-    [self.containerView addSubview:madib];
-    
-    
-    CGFloat buttonWidth = (self.containerView.width - 50) / 4; // 计算按钮宽度（左右间距 10，按钮间距 10）
-    CGFloat buttonHeight = 110.5;
-    CGFloat startX = 9; // 起始 X 坐标
+    CGFloat buttonWidth = (self.containerView.width - 31) / 4; // 计算按钮宽度（左右间距 10，按钮间距 10）
+    CGFloat buttonHeight = 55.0;
+    CGFloat startX = 3; // 起始 X 坐标
         
     NSArray *buttonTitles = @[@"All", @"In progress", @"Repayment", @"Completed"];
     NSMutableArray *buttons = [NSMutableArray array];
+    UIColor *normalTitleColor = [UIView colorFromRGB:0x929292];
+    
     for (int i = 0; i < buttonTitles.count; i++) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.frame = CGRectMake(startX + i * (buttonWidth + 10), 0, buttonWidth, buttonHeight);
         [button setTitle:buttonTitles[i] forState:UIControlStateNormal];
-        [button setBackgroundImage:[UIImage imageNamed:@"xnomttout"] forState:(UIControlStateNormal)];
-        [button setBackgroundImage:[UIImage imageNamed:@"xseltout"] forState:(UIControlStateSelected)];
-        [button setTitleColor:[UIColor whiteColor] forState:(UIControlStateNormal)];
-        button.titleLabel.font = [UIFont boldSystemFontOfSize:13];
+        // 选中态：绿色渐变背景 + 白色描边（匹配设计稿的选中 pill）
+        [button setBackgroundImage:[UIImage imageNamed:@"itembg"] forState:(UIControlStateSelected)];
+        [button setTitleColor:normalTitleColor forState:UIControlStateNormal];
+        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
+        button.titleLabel.font = [UIFont systemFontOfSize:13]; // 未选中：常规
+        button.backgroundColor = [UIColor clearColor];
+        button.clipsToBounds = YES;
+        button.layer.cornerRadius = 10;
+        button.layer.borderWidth = 0;
+        button.layer.borderColor = [UIColor whiteColor].CGColor;
         button.tag = i+1; // 设置 tag 用于区分按钮
         button.selected = i == 0?YES:NO;
-        [button setTitleEdgeInsets:UIEdgeInsetsMake(67.5, 0, 0, 0)];
+        if (button.selected) {
+            button.titleLabel.font = [UIFont boldSystemFontOfSize:13]; // 选中：加粗
+            button.layer.borderWidth = 2; // 选中态描边
+            self.tepmBtn = button;
+        }
         [button addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
-        [self.containerView insertSubview:button atIndex:0];
+        [barView insertSubview:button atIndex:0];
         [buttons addObject:button];
     }
     self.buttons = buttons.copy; // 存储所有按钮
     
     self.thuds = @"4";
     
-    
-    
-    
     // 创建表格视图
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(19, buttonHeight+20, self.containerView.width-38, self.containerView.height-130.5) style:UITableViewStyleGrouped];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(19, 20, self.containerView.width-38, self.containerView.height-40) style:UITableViewStyleGrouped];
     self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
@@ -176,20 +185,19 @@
 
 // 按钮点击事件
 - (void)buttonClicked:(UIButton *)sender {
-    // 遍历所有按钮，取消选中状态
-        for (UIButton *button in self.buttons) {
-            button.selected = NO;
-            // 恢复默认背景色
-            [button setBackgroundImage:[UIImage imageNamed:@"xnomttout"] forState:(UIControlStateNormal)];
-            
-        }
-        
+    self.tepmBtn.selected = NO;
+    self.tepmBtn.titleLabel.font = [UIFont systemFontOfSize:13];
+    [self.tepmBtn setTitleColor:[UIView colorFromRGB:0x929292] forState:UIControlStateNormal];
+    self.tepmBtn.layer.borderWidth = 0;
+    
     // 选中当前按钮
     sender.selected = YES;
-     // 选中背景色
-    [sender setBackgroundImage:[UIImage imageNamed:@"xseltout"] forState:(UIControlStateSelected)];
+    sender.titleLabel.font = [UIFont boldSystemFontOfSize:13];
+    [sender setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
+    sender.layer.borderWidth = 2;
     
-    
+    self.tepmBtn = sender;
+
     if(sender.tag == 1){
         self.thuds = @"4";
     }else if (sender.tag == 2){
@@ -518,105 +526,109 @@
 }
 
 - (void)setupEmptyView {
+    // 空数据视图：先创建，避免网络监听回调未触发时页面始终不显示
+    self.emptyView = [[UIView alloc] initWithFrame:self.tableView.bounds];
+    self.emptyView.backgroundColor = [UIColor clearColor];
+    self.emptyView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self.tableView addSubview:self.emptyView];
 
-    // 检查网络状态
+    UIStackView *stackView = [[UIStackView alloc] init];
+    stackView.axis = UILayoutConstraintAxisVertical;
+    stackView.alignment = UIStackViewAlignmentCenter;
+    stackView.distribution = UIStackViewDistributionEqualSpacing;
+    stackView.spacing = 10;
+    stackView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.emptyView addSubview:stackView];
+
+    [NSLayoutConstraint activateConstraints:@[
+        [stackView.centerXAnchor constraintEqualToAnchor:self.emptyView.centerXAnchor],
+        [stackView.centerYAnchor constraintEqualToAnchor:self.emptyView.centerYAnchor constant:-50],
+        [stackView.leadingAnchor constraintEqualToAnchor:self.emptyView.leadingAnchor constant:20],
+        [stackView.trailingAnchor constraintEqualToAnchor:self.emptyView.trailingAnchor constant:-20],
+    ]];
+
+    self.emptyIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"apoli"]];
+    self.emptyIconView.contentMode = UIViewContentModeScaleAspectFit;
+    self.emptyIconView.translatesAutoresizingMaskIntoConstraints = NO;
+
+    self.emptyTitleLabel = [[UILabel alloc] init];
+    self.emptyTitleLabel.textAlignment = NSTextAlignmentCenter;
+    self.emptyTitleLabel.numberOfLines = 1;
+    self.emptyTitleLabel.font = [UIFont boldSystemFontOfSize:18];
+    self.emptyTitleLabel.textColor = [UIColor darkGrayColor];
+
+    self.emptySubtitleLabel = [[UILabel alloc] init];
+    self.emptySubtitleLabel.textAlignment = NSTextAlignmentCenter;
+    self.emptySubtitleLabel.numberOfLines = 2;
+    self.emptySubtitleLabel.font = [UIFont systemFontOfSize:14];
+    self.emptySubtitleLabel.textColor = [UIColor grayColor];
+
+    self.emptyActionButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    self.emptyActionButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.emptyActionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    // 默认先给一个，后面会按网络状态切换（有网走绿色样式）
+    [self.emptyActionButton setBackgroundImage:[UIImage imageNamed:@"applybg"] forState:UIControlStateNormal];
+    self.emptyActionButton.layer.cornerRadius = 22; // 高度 44 的半圆角
+    self.emptyActionButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
+    [self.emptyActionButton addTarget:self action:@selector(refreshButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+
+    [stackView addArrangedSubview:self.emptyIconView];
+    [stackView addArrangedSubview:self.emptyTitleLabel];
+    [stackView addArrangedSubview:self.emptySubtitleLabel];
+    [stackView addArrangedSubview:self.emptyActionButton];
+
+    // 尺寸约束（stackView 内）
+    [NSLayoutConstraint activateConstraints:@[
+        // 图2“清单夹”插画比例更像 120x120 的视觉大小
+        [self.emptyIconView.widthAnchor constraintEqualToConstant:120],
+        [self.emptyIconView.heightAnchor constraintEqualToConstant:120],
+        [self.emptyActionButton.widthAnchor constraintEqualToConstant:217],
+        [self.emptyActionButton.heightAnchor constraintEqualToConstant:44],
+    ]];
+
+    // 根据当前网络状态先初始化一次
+    BOOL hasNetworkNow = [[NetworkManager sharedManager] isNetworkAvailable];
+    if (hasNetworkNow) {
+        self.emptyIconView.image = [UIImage imageNamed:@"emptypicon"];
+        self.emptyTitleLabel.hidden = YES; // 只显示两行提示，匹配截图
+        self.emptySubtitleLabel.text = @"There are currently no order\nrecords available";
+        [self.emptyActionButton setTitle:@"Apply" forState:UIControlStateNormal];
+        [self.emptyActionButton setBackgroundImage:[UIImage imageNamed:@"applybg"] forState:UIControlStateNormal];
+    } else {
+        self.emptyIconView.image = [UIImage imageNamed:@"apowkk"];
+        self.emptyTitleLabel.hidden = NO;
+        self.emptyTitleLabel.text = @"No network available";
+        self.emptySubtitleLabel.text = @"Sorry, the page cannot be found";
+        [self.emptyActionButton setTitle:@"Refresh It" forState:UIControlStateNormal];
+        [self.emptyActionButton setBackgroundImage:[UIImage imageNamed:@"zonbuta"] forState:UIControlStateNormal];
+    }
+
+    // 监听网络变化时更新文案/按钮（空数据时可见）
     [NetworkManager startMonitoringNetworkStatusWithCallback:^(BOOL hasNetwork, NSString *networkType) {
-        NSArray *ary;
-        if (hasNetwork) {
-            ary = @[@"apoli",@"No orders yet",@"There are currently no order \nrecords available",@"Apply"];
-        }else{
-            ary = @[@"apowkk",@"No network available",@"Sorry, the page cannot be found",@"Refresh It"];
-        }
-        
-        // 创建容器视图
-        self.emptyView = [[UIView alloc] initWithFrame:self.tableView.bounds];
-        self.emptyView.backgroundColor = [UIColor clearColor];
-        self.emptyView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        
-        // 创建内容容器（方便居中布局）
-        UIView *contentView = [[UIView alloc] init];
-        contentView.translatesAutoresizingMaskIntoConstraints = NO;
-        [self.emptyView addSubview:contentView];
-        
-        // 添加图标
-        UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:ary[0]]];
-        imageView.contentMode = UIViewContentModeScaleAspectFit;
-        imageView.translatesAutoresizingMaskIntoConstraints = NO;
-        [contentView addSubview:imageView];
-        
-        // 添加主标题
-        UILabel *titleLabel = [[UILabel alloc] init];
-        titleLabel.text = ary[1];
-        titleLabel.textColor = [UIColor darkGrayColor];
-        titleLabel.font = [UIFont boldSystemFontOfSize:18];
-        titleLabel.textAlignment = NSTextAlignmentCenter;
-        titleLabel.numberOfLines = 1;
-        titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
-        [contentView addSubview:titleLabel];
-        
-        // 添加副标题（两行）
-        UILabel *subtitleLabel = [[UILabel alloc] init];
-        subtitleLabel.text = ary[2];
-        subtitleLabel.textColor = [UIColor grayColor];
-        subtitleLabel.font = [UIFont systemFontOfSize:14];
-        subtitleLabel.textAlignment = NSTextAlignmentCenter;
-        subtitleLabel.numberOfLines = 2;
-        subtitleLabel.translatesAutoresizingMaskIntoConstraints = NO;
-        [contentView addSubview:subtitleLabel];
-        
-        // 添加刷新按钮
-        UIButton *refreshButton = [UIButton buttonWithType:UIButtonTypeSystem];
-        [refreshButton setTitle:ary[3] forState:UIControlStateNormal];
-        [refreshButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [refreshButton setBackgroundImage:[UIImage imageNamed:@"zonbuta"] forState:(UIControlStateNormal)];
-        refreshButton.layer.cornerRadius = 6;
-        refreshButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
-        refreshButton.translatesAutoresizingMaskIntoConstraints = NO;
-        [refreshButton addTarget:self action:@selector(refreshButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-        [contentView addSubview:refreshButton];
-        
-        // 设置约束
-        [NSLayoutConstraint activateConstraints:@[
-            // 内容容器居中
-            [contentView.centerXAnchor constraintEqualToAnchor:self.emptyView.centerXAnchor],
-            [contentView.centerYAnchor constraintEqualToAnchor:self.emptyView.centerYAnchor constant:-50], // 稍微上移
-            
-            // 图标
-            [imageView.topAnchor constraintEqualToAnchor:contentView.topAnchor],
-            [imageView.centerXAnchor constraintEqualToAnchor:contentView.centerXAnchor],
-            [imageView.widthAnchor constraintEqualToConstant:100],
-            [imageView.heightAnchor constraintEqualToConstant:100],
-            
-            // 主标题
-            [titleLabel.topAnchor constraintEqualToAnchor:imageView.bottomAnchor constant:20],
-            [titleLabel.leadingAnchor constraintEqualToAnchor:contentView.leadingAnchor],
-            [titleLabel.trailingAnchor constraintEqualToAnchor:contentView.trailingAnchor],
-            
-            // 副标题
-            [subtitleLabel.topAnchor constraintEqualToAnchor:titleLabel.bottomAnchor constant:10],
-            [subtitleLabel.leadingAnchor constraintEqualToAnchor:contentView.leadingAnchor],
-            [subtitleLabel.trailingAnchor constraintEqualToAnchor:contentView.trailingAnchor],
-            
-            // 按钮
-            [refreshButton.topAnchor constraintEqualToAnchor:subtitleLabel.bottomAnchor constant:25],
-            [refreshButton.centerXAnchor constraintEqualToAnchor:contentView.centerXAnchor],
-            [refreshButton.widthAnchor constraintEqualToConstant:217],
-            [refreshButton.heightAnchor constraintEqualToConstant:44],
-            [refreshButton.bottomAnchor constraintEqualToAnchor:contentView.bottomAnchor] // 确保contentView高度正确
-        ]];
-        
-        // 初始隐藏
-        self.emptyView.hidden = YES;
-        [self.tableView addSubview:self.emptyView];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (!self.emptyView) return;
+            if (hasNetwork) {
+                self.emptyIconView.image = [UIImage imageNamed:@"emptypicon"];
+                self.emptyTitleLabel.hidden = YES;
+                self.emptySubtitleLabel.text = @"There are currently no order\nrecords available";
+                [self.emptyActionButton setTitle:@"Apply" forState:UIControlStateNormal];
+                [self.emptyActionButton setBackgroundImage:[UIImage imageNamed:@"applybg"] forState:UIControlStateNormal];
+            } else {
+                self.emptyIconView.image = [UIImage imageNamed:@"apowkk"];
+                self.emptyTitleLabel.hidden = NO;
+                self.emptyTitleLabel.text = @"No network available";
+                self.emptySubtitleLabel.text = @"Sorry, the page cannot be found";
+                [self.emptyActionButton setTitle:@"Refresh It" forState:UIControlStateNormal];
+                [self.emptyActionButton setBackgroundImage:[UIImage imageNamed:@"zonbuta"] forState:UIControlStateNormal];
+            }
+        });
     }];
-    
-    
-   
 }
 
 #pragma mark - 按钮点击事件
 - (void)refreshButtonTapped:(UIButton*)sender {
-    if([sender.currentTitle isEqualToString:@"Go AppLy"]){
+    NSString *title = sender.currentTitle ?: @"";
+    if([title isEqualToString:@"Apply"] || [title isEqualToString:@"Go AppLy"]){
 
         [self popToSpecificViewController:[HoPerController class]];
     }else{

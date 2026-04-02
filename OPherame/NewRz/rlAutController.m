@@ -30,7 +30,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.title = @"Authentication";
+    self.title = self.navTitle;
     self.customTitleColor = [UIColor whiteColor];
     UIImage *image = [UIImage imageNamed:@"plobac"];
     UIImageView *backgroundImageView = [[UIImageView alloc] init];
@@ -70,7 +70,7 @@
 }
 
 -(void)uploadviewsTopView:(UIView*)topView{
-    UIImageView *receiveing = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"receiveing"]];
+    UIImageView *receiveing = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"idcardface"]];
     receiveing.frame = CGRectMake(1, -11, topView.width-96, 41);
     [topView addSubview:receiveing];
     
@@ -95,8 +95,10 @@
     [topView addSubview:bot_tit];
     
     
+    CGRect applyFrame = CGRectMake((UIScreen.mainScreen.bounds.size.width - 302)/2.0, self.view.bounds.size.height - 60, 302, 54);
+
     UIButton *applyButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    applyButton.frame = CGRectMake(61, self.view.bounds.size.height - 80, self.view.bounds.size.width - 122, 50);
+    applyButton.frame = applyFrame;
     [applyButton setTitle:@"Continue certification" forState:UIControlStateNormal];
     [applyButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     applyButton.titleLabel.font = [UIFont boldSystemFontOfSize:18];

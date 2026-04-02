@@ -19,6 +19,8 @@
 #import "LocationUtilfo.h"
 #import "DeviceInfoCollector.h"
 #import "Base64Tool.h"
+#import <QuartzCore/QuartzCore.h>
+#import "UIView+FrameUtil.h"
 @interface FrequqesController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,OPhNavigationBackButtonDelegate>
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) UICollectionView *collectionView;
@@ -26,6 +28,14 @@
 @property (nonatomic, strong) NSDictionary *species;
 
 @property (nonatomic, strong) NSString *flipped;
+
+@property (nonatomic, strong) NSDictionary *scary;
+@property (nonatomic, strong) UILabel *productNameLabel;
+
+@property (nonatomic, strong) UILabel *loanTitleLabel;
+
+@property (nonatomic, strong) UILabel *loanAmountValueLabel;
+
 @end
 
 @implementation FrequqesController
@@ -85,12 +95,16 @@
             
             self.flipped = responseObject[@"thump"][@"scary"][@"flipped"];
             self.species = responseObject[@"thump"][@"species"];
+            self.scary = responseObject[@"thump"][@"scary"];
+            [self updateHeaderWithScary:self.scary];
             self.dataArray = [NSMutableArray array];
             NSArray *iconNames = @[@"wenabn", @"wenbbn", @"wencbn", @"wendbn", @"wenebn"];
             int icon_i = 0;
             for (NSObject *obj in responseObject[@"thump"][@"associate"]) {
                 AuthenticationModel *model = [AuthenticationModel yy_modelWithJSON:obj];
-                model.icon = iconNames[icon_i];
+                if (icon_i < (int)iconNames.count) {
+                    model.icon = iconNames[icon_i];
+                }
                 icon_i++;
                 [self.dataArray addObject:model];
             }
@@ -105,6 +119,52 @@
         // 结束刷新动画
         [refreshControl endRefreshing];
     }];
+}
+
+// 用 scary 填充顶部 header（Product Details 卡片）
+- (void)updateHeaderWithScary:(NSDictionary *)scary {
+    if (!scary) return;
+    
+    NSString *productName = scary[@"marinate"];
+    if (productName.length == 0) {
+        productName = @"Credit Peso";
+    }
+    self.productNameLabel.text = productName;
+    
+    id amountAny = scary[@"annoying"];
+    if (amountAny == nil || amountAny == [NSNull null]) {
+        amountAny = @"0";
+    }
+    NSString *amountRaw = nil;
+    if ([amountAny isKindOfClass:[NSString class]]) {
+        amountRaw = (NSString *)amountAny;
+    } else if ([amountAny respondsToSelector:@selector(stringValue)]) {
+        // 兼容 NSNumber 等类型
+        amountRaw = [amountAny stringValue];
+    } else {
+        amountRaw = @"0";
+    }
+    
+    // 提取数字并做千分位格式化：接口可能是 "1.100.000"
+    NSCharacterSet *nonDigits = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
+    NSString *digitsOnly = [[amountRaw componentsSeparatedByCharactersInSet:nonDigits] componentsJoinedByString:@""];
+    if (digitsOnly.length == 0) digitsOnly = @"0";
+    
+    NSNumberFormatter *fmt = [[NSNumberFormatter alloc] init];
+    fmt.numberStyle = NSNumberFormatterDecimalStyle;
+    fmt.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+    NSString *formatted = [fmt stringFromNumber:@(digitsOnly.longLongValue)];
+    
+    self.loanAmountValueLabel.text = formatted ?: digitsOnly;
+    
+    NSString *distant = [scary valueForKey:@"distant"];
+    
+    if (distant.length > 0) {
+        self.loanTitleLabel.text = [scary valueForKey:@"distant"];
+    } else {
+        self.loanTitleLabel.text = @"Loan amount（₱）";
+    }
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -126,7 +186,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.title = @"Authentication";
+    self.title = @"Product Details";
     self.customTitleColor = [UIColor whiteColor];
     UIImage *image = [UIImage imageNamed:@"plobac"];
     UIImageView *backgroundImageView = [[UIImageView alloc] init];
@@ -168,30 +228,104 @@
 }
 
 - (void)setupCollectionView {
+    // 1) Top product header（detailheader）
+    CGFloat navTop = [UIView navigationBarHeight] + [UIView statusBarHeight];
+    CGFloat cardX = 16; // 左右间距 16（设计稿）
+    CGFloat cardW = self.view.bounds.size.width - cardX * 2;
+    CGFloat productCardH = cardW * 319.0 / 692.0; // 692:319
+    CGFloat productCardY = navTop;
+    
+    UIImageView *productBg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"detailheader"]];
+    productBg.frame = CGRectMake(cardX, productCardY, cardW, productCardH);
+    productBg.contentMode = UIViewContentModeScaleToFill;
+    [self.view addSubview:productBg];
+    
+    self.productNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(productBg.centerX - 60, 12, 120, 32)];
+    self.productNameLabel.font = [UIFont boldSystemFontOfSize:16];
+    self.productNameLabel.textColor = [UIView colorFromRGB:0x3D3D3D];
+    self.productNameLabel.textAlignment = NSTextAlignmentLeft;
+    [productBg addSubview:self.productNameLabel];
+    
+    // 用 logo 切图展示（裁切为左上角图标样式）
+    UIImageView *brandLogoView = [[UIImageView alloc] initWithFrame:CGRectMake(self.productNameLabel.left - 40, 12, 32, 32)];
+    brandLogoView.image = [UIImage imageNamed:@"logoh"];
+    brandLogoView.contentMode = UIViewContentModeScaleAspectFill;
+    brandLogoView.clipsToBounds = YES;
+    [productBg addSubview:brandLogoView];
+    
+    
+    UILabel *loanTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(28, 78, cardW - 56, 20)];
+    loanTitleLabel.font = [UIFont systemFontOfSize:14];
+    loanTitleLabel.textColor = [UIView colorFromRGB:0x363636];
+    loanTitleLabel.textAlignment = NSTextAlignmentCenter;
+    [productBg addSubview:loanTitleLabel];
+    self.loanTitleLabel = loanTitleLabel;
+    
+    
+    self.loanAmountValueLabel = [[UILabel alloc] initWithFrame:CGRectMake(28, 105, cardW - 56, 52)];
+    self.loanAmountValueLabel.font = [UIFont boldSystemFontOfSize:40];
+    self.loanAmountValueLabel.textColor = [UIView colorFromRGB:0x01506B];
+    self.loanAmountValueLabel.textAlignment = NSTextAlignmentCenter;
+    [productBg addSubview:self.loanAmountValueLabel];
+    
+    // Bottom Apply
+    CGRect applyFrame = CGRectMake((UIScreen.mainScreen.bounds.size.width - 302)/2.0, self.view.bounds.size.height - 60, 302, 54);
+    UIButton *applyButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    applyButton.frame = applyFrame;
+    [applyButton setTitle:@"Apply" forState:UIControlStateNormal];
+    applyButton.titleLabel.font = [UIFont boldSystemFontOfSize:18];
+    [applyButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [applyButton setBackgroundImage:[UIImage imageNamed:@"bukathx"] forState:UIControlStateNormal];
+    applyButton.layer.borderWidth = 0;
+    applyButton.layer.cornerRadius = 26;
+    applyButton.backgroundColor = [UIColor clearColor];
+    [applyButton addTarget:self action:@selector(didItemforaLoan) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:applyButton];
+    
+    // 2) 全部列表背景（detailcontent）
+    CGFloat contentGap = 12;
+    CGFloat contentCardY = productCardY + productCardH + contentGap;
+    CGFloat desiredContentH = cardW * 1600.0 / 1448.0; // detailcontent 的比例
+    CGFloat maxContentH = applyFrame.origin.y - contentCardY - 14;
+    if (maxContentH < 120) maxContentH = 120;
+    CGFloat contentCardH = MIN(desiredContentH, maxContentH);
+    
+    UIImageView *contentBg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"detailcontent"]];
+    contentBg.frame = CGRectMake(cardX, contentCardY, cardW, contentCardH);
+    contentBg.contentMode = UIViewContentModeScaleToFill;
+    [self.view addSubview:contentBg];
+    
+    // 红色 bar 标题（覆盖在 detailcontent 顶部红条上）
+    CGFloat sectionTitleH = 34;
+    CGFloat sectionTitleYInContent = 5;
+    UILabel *sectionTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, sectionTitleYInContent, cardW, sectionTitleH)];
+    sectionTitle.text = @"Certification items";
+    sectionTitle.font = [UIFont boldSystemFontOfSize:14];
+    sectionTitle.textColor = [UIColor whiteColor];
+    sectionTitle.textAlignment = NSTextAlignmentCenter;
+    [contentBg addSubview:sectionTitle];
+    
+    // 3) 列表：单列纵向（放在 detailcontent 白色区域）
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     layout.scrollDirection = UICollectionViewScrollDirectionVertical;
-    layout.itemSize = CGSizeMake((self.view.width-29*2-12)/2, 175.5);
-    layout.minimumLineSpacing = 15; // 上下间距
-    layout.minimumInteritemSpacing = 12; // 左右间距
-    layout.sectionInset = UIEdgeInsetsMake(15, 29, 15, 29); // 整体边距
     
-    _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, [UIView navigationBarHeight]+[UIView statusBarHeight]+34, self.view.width, self.view.height-[UIView navigationBarHeight]-[UIView statusBarHeight]-34-80) collectionViewLayout:layout];
+    CGFloat listInsetX = 20;
+    CGFloat listW = cardW - 40;
+    CGFloat cellH = 56;
+    layout.itemSize = CGSizeMake(listW, cellH);
+    layout.minimumLineSpacing = 12;
+    layout.sectionInset = UIEdgeInsetsMake(12, 0, 12, 0);
+    
+    CGFloat listTopInContent = sectionTitleYInContent + sectionTitleH;
+    CGFloat listH = contentCardH - listTopInContent - 6;
+    if (listH < 100) listH = 100;
+    
+    _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(cardX + listInsetX, contentCardY + listTopInContent, listW, listH) collectionViewLayout:layout];
     _collectionView.backgroundColor = [UIColor clearColor];
     _collectionView.delegate = self;
     _collectionView.dataSource = self;
     [_collectionView registerClass:[AuthenticationCell class] forCellWithReuseIdentifier:@"AuthenticationCell"];
-    
     [self.view addSubview:_collectionView];
-    
-    // 添加底部申请贷款按钮
-    UIButton *applyButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    applyButton.frame = CGRectMake(61, self.view.bounds.size.height - 80, self.view.bounds.size.width - 122, 50);
-    [applyButton setTitle:@"Apply for a loan" forState:UIControlStateNormal];
-    [applyButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    applyButton.titleLabel.font = [UIFont boldSystemFontOfSize:18];
-    [applyButton setBackgroundImage:[UIImage imageNamed:@"bukath"] forState:(UIControlStateNormal)];
-    [applyButton addTarget:self action:@selector(didItemforaLoan) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:applyButton];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -244,6 +378,10 @@
                         sfAutController *controller = [[sfAutController alloc]init];
                         controller.harukos = components[1];
                         controller.vegetable = (NSString*)obj;
+                        AuthenticationModel *model = self.dataArray.firstObject;
+                        
+                        controller.navTitle =  model.downright;
+                        
                         controller.imitation = [responseObject[@"thump"][@"imitation"] doubleValue];
                         [self.navigationController pushViewController:controller animated:YES];
                         
@@ -260,6 +398,9 @@
                     controller.harukos = components[1];
                     controller.vegetable = responseObject[@"thump"][@"wedged"][@"vegetable"];
                     controller.imitation = [responseObject[@"thump"][@"imitation"] doubleValue];
+                    AuthenticationModel *model = self.dataArray.firstObject;
+                    
+                    controller.navTitle =  model.downright;
                     [self.navigationController pushViewController:controller animated:YES];
                 }else if ([responseObject[@"thump"][@"wedged"][@"during"] isEqualToNumber:@1]&&[responseObject[@"thump"][@"combine"] isEqualToNumber:@1]){
                     //跳转认证结果页面.
@@ -284,21 +425,55 @@
         GorenBackController *controller = [[GorenBackController alloc]init];
         controller.harukos = components[1];
         controller.flipped = self.flipped;
+        
+        [self.dataArray enumerateObjectsUsingBlock:^(AuthenticationModel *  _Nonnull item, NSUInteger idx, BOOL * _Nonnull stop) {
+            
+            if (item.pensive == itemMod.pensive) {
+                controller.navTitle = item.downright;
+            }
+            
+        }];
+        
         [self.navigationController pushViewController:controller animated:YES];
     }else if(itemMod.during == 1&&indexPath.item == 2){
         GworkBackController *controller = [[GworkBackController alloc]init];
         controller.harukos = components[1];
         controller.flipped = self.flipped;
+        [self.dataArray enumerateObjectsUsingBlock:^(AuthenticationModel *  _Nonnull item, NSUInteger idx, BOOL * _Nonnull stop) {
+            
+            if (item.pensive == itemMod.pensive) {
+                controller.navTitle = item.downright;
+            }
+            
+        }];
+        
         [self.navigationController pushViewController:controller animated:YES];
     }else if(itemMod.during == 1&&indexPath.item == 3){
         GtxlplBackController *controller = [[GtxlplBackController alloc]init];
         controller.harukos = components[1];
         controller.flipped = self.flipped;
+        
+        [self.dataArray enumerateObjectsUsingBlock:^(AuthenticationModel *  _Nonnull item, NSUInteger idx, BOOL * _Nonnull stop) {
+            
+            if (item.pensive == itemMod.pensive) {
+                controller.navTitle = item.downright;
+            }
+            
+        }];
+        
         [self.navigationController pushViewController:controller animated:YES];
     }else if(itemMod.during == 1&&indexPath.item == 4){
         GpaymBackController *controller = [[GpaymBackController alloc]init];
         controller.harukos = components[1];
         controller.flipped = self.flipped;
+        
+        [self.dataArray enumerateObjectsUsingBlock:^(AuthenticationModel *  _Nonnull item, NSUInteger idx, BOOL * _Nonnull stop) {
+            
+            if (item.pensive == itemMod.pensive) {
+                controller.navTitle = item.downright;
+            }
+            
+        }];
         [self.navigationController pushViewController:controller animated:YES];
     }else{
         //全部认证完成
@@ -314,7 +489,15 @@
         [self cradiatingButtonTomomi];
         return;
     }
-    if([self.species[@"pensive"] isEqualToString:@"cupersuchousF"]){
+    NSString *pensive = self.species[@"pensive"];
+    if(pensive == nil || [pensive isKindOfClass:[NSNull class]] || pensive.length == 0){
+        // 认证项全部完成：直接进入下一步申请
+        [self cradiatingButtonTomomi];
+        return;
+    }
+    
+    // 兼容新旧 pensive 字段值
+    if([pensive isEqualToString:@"cupersuchousF"] || [pensive isEqualToString:@"public"]){
         //获取用户身份信息（第一项）
         
         [[NetworkManager sharedManager] GET:@"/radiating/forest"
@@ -340,6 +523,10 @@
                         controller.harukos = components[1];
                         controller.vegetable = (NSString*)obj;
                         controller.imitation = [responseObject[@"thump"][@"imitation"] doubleValue];
+                        AuthenticationModel *model = self.dataArray.firstObject;
+                        
+                        controller.navTitle =  model.downright;
+                        
                         [self.navigationController pushViewController:controller animated:YES];
                         
                         NSMutableDictionary *mutbdic = [NSMutableDictionary dictionary];
@@ -355,6 +542,11 @@
                     controller.harukos = components[1];
                     controller.vegetable = responseObject[@"thump"][@"wedged"][@"vegetable"];
                     controller.imitation = [responseObject[@"thump"][@"imitation"] doubleValue];
+                    
+                    AuthenticationModel *model = self.dataArray.firstObject;
+                    
+                    controller.navTitle =  model.downright;
+                    
                     [self.navigationController pushViewController:controller animated:YES];
                 }else if ([responseObject[@"thump"][@"wedged"][@"during"] isEqualToNumber:@1]&&[responseObject[@"thump"][@"combine"] isEqualToNumber:@1]){
                     //跳转认证结果页面.
@@ -377,25 +569,56 @@
             }];
         
         
-    }else if ([self.species[@"pensive"] isEqualToString:@"cupersuchousG"]){
+    }else if ([pensive isEqualToString:@"cupersuchousG"] || [pensive isEqualToString:@"personal"]){
         GorenBackController *controller = [[GorenBackController alloc]init];
         controller.harukos = components[1];
         controller.flipped = self.flipped;
+        
+        [self.dataArray enumerateObjectsUsingBlock:^(AuthenticationModel *  _Nonnull item, NSUInteger idx, BOOL * _Nonnull stop) {
+            
+            if ([item.pensive isEqualToString:@"cupersuchousG"]) {
+                controller.navTitle = item.downright;
+            }
+            
+        }];
+        
         [self.navigationController pushViewController:controller animated:YES];
-    }else if ([self.species[@"pensive"] isEqualToString:@"cupersuchousH"]){
+    }else if ([pensive isEqualToString:@"cupersuchousH"] || [pensive isEqualToString:@"job"]){
         GworkBackController *controller = [[GworkBackController alloc]init];
         controller.harukos = components[1];
         controller.flipped = self.flipped;
+        
+        [self.dataArray enumerateObjectsUsingBlock:^(AuthenticationModel *  _Nonnull item, NSUInteger idx, BOOL * _Nonnull stop) {
+            
+            if ([item.pensive isEqualToString:@"cupersuchousH"]) {
+                controller.navTitle = item.downright;
+            }
+            
+        }];
         [self.navigationController pushViewController:controller animated:YES];
-    }else if ([self.species[@"pensive"] isEqualToString:@"cupersuchousI"]){
+    }else if ([pensive isEqualToString:@"cupersuchousI"] || [pensive isEqualToString:@"ext"]){
         GtxlplBackController *controller = [[GtxlplBackController alloc]init];
         controller.harukos = components[1];
         controller.flipped = self.flipped;
+        [self.dataArray enumerateObjectsUsingBlock:^(AuthenticationModel *  _Nonnull item, NSUInteger idx, BOOL * _Nonnull stop) {
+            
+            if ([item.pensive isEqualToString:@"cupersuchousI"]) {
+                controller.navTitle = item.downright;
+            }
+            
+        }];
         [self.navigationController pushViewController:controller animated:YES];
-    }else if ([self.species[@"pensive"] isEqualToString:@"cupersuchousL"]){
+    }else if ([pensive isEqualToString:@"cupersuchousL"] || [pensive isEqualToString:@"bank"]){
         GpaymBackController *controller = [[GpaymBackController alloc]init];
         controller.harukos = components[1];
         controller.flipped = self.flipped;
+        [self.dataArray enumerateObjectsUsingBlock:^(AuthenticationModel *  _Nonnull item, NSUInteger idx, BOOL * _Nonnull stop) {
+            
+            if ([item.pensive isEqualToString:@"cupersuchousG"]) {
+                controller.navTitle = item.downright;
+            }
+            
+        }];
         [self.navigationController pushViewController:controller animated:YES];
     }
     

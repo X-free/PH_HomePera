@@ -17,6 +17,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong)NSString *realname;
 @property (nonatomic, strong)NSString *unique;
 @property (nonatomic, strong)NSString *birthday;
+
+@property (nonatomic, copy) NSString *navTitle;
+
+
 @end
 
 NS_ASSUME_NONNULL_END

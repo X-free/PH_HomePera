@@ -212,7 +212,7 @@
     _enterButton.frame = CGRectMake(60, containerView.height - 79, self.view.width-60*2, 50);
     [_enterButton setTitle:@"Enter" forState:UIControlStateNormal];
     [_enterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [_enterButton setBackgroundImage:[UIImage imageNamed:@"bukathn"] forState:(UIControlStateNormal)];
+    [_enterButton setBackgroundImage:[UIImage imageNamed:@"bukath"] forState:(UIControlStateNormal)];
     _enterButton.layer.cornerRadius = 25;
     [_enterButton addTarget:self action:@selector(loginAction) forControlEvents:UIControlEventTouchUpInside];
     [containerView addSubview:_enterButton];

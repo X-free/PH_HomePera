@@ -44,7 +44,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.title = @"My Contacts";
+    self.title = self.navTitle;
     self.customTitleColor = [UIColor whiteColor];
     UIImage *image = [UIImage imageNamed:@"plobac"];
     UIImageView *backgroundImageView = [[UIImageView alloc] init];
@@ -107,7 +107,7 @@
     [self.containerView addSubview:self.tableView];
     
     // 自动调整高度
-    self.tableView.rowHeight = 107.5;
+    self.tableView.rowHeight = 120;
 
     
     // 监听表格内容变化
@@ -261,7 +261,7 @@
         [cell.contentView addSubview:titleLabel];
         
         // 输入框/占位文本
-        UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(0, titleLabel.bottom+5, CGRectGetWidth(tableView.frame), 33)];
+        UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(0, titleLabel.bottom+5, CGRectGetWidth(tableView.frame), 40)];
         textField.tag = 101;
         textField.font = [UIFont systemFontOfSize:13];
         textField.backgroundColor = [UIView colorFromRGB:0xF8F8F8];
@@ -269,7 +269,7 @@
         [cell.contentView addSubview:textField];
         
         // 设置左边间距
-        UIView *leftPadding = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 12, 33)];
+        UIView *leftPadding = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 12, 40)];
         textField.leftView = leftPadding;
         textField.leftViewMode = UITextFieldViewModeAlways;
         
@@ -280,7 +280,7 @@
         arrowButton.frame = CGRectMake(0, 0, 15, 15); // 调整大小
         arrowButton.userInteractionEnabled = NO;
         arrowButton.tintColor = [UIColor lightGrayColor];
-        UIView *rightContainer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 30, 33)];
+        UIView *rightContainer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 30, 40)];
         // 调整图标垂直居中
         CGFloat verticalOffset = (textField.frame.size.height - 15) / 2;
         arrowButton.frame = CGRectMake((30-15)/2, verticalOffset, 15, 15);
@@ -294,7 +294,7 @@
         
         
         //联系人方式
-        UITextField *comrField = [[UITextField alloc] initWithFrame:CGRectMake(0, textField.bottom+12, CGRectGetWidth(tableView.frame), 33)];
+        UITextField *comrField = [[UITextField alloc] initWithFrame:CGRectMake(0, textField.bottom+12, CGRectGetWidth(tableView.frame), 40)];
         comrField.tag = 102;
         comrField.font = [UIFont systemFontOfSize:13];
         comrField.backgroundColor = [UIView colorFromRGB:0xF8F8F8];
@@ -302,7 +302,7 @@
         [cell.contentView addSubview:comrField];
         
         // 设置左边间距
-        leftPadding = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 12, 33)];
+        leftPadding = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 12, 40)];
         comrField.leftView = leftPadding;
         comrField.leftViewMode = UITextFieldViewModeAlways;
         

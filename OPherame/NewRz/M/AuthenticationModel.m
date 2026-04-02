@@ -49,16 +49,8 @@
     return models.copy;
 }
 
-
-+ (NSString *)stringFromUserStatus:(CertificationType)status {
-    switch (status) {
-        case cupersuchousF:    return @"cupersuchousF";
-        case cupersuchousG:   return @"cupersuchousG";
-        case cupersuchousH:      return @"cupersuchousH";
-        case cupersuchousI: return @"cupersuchousI";
-        case cupersuchousL: return @"cupersuchousL";
-        default:                 return @"Unknown";
-    }
++ (NSString *)stringFromUserStatus:(NSString *)status {
+    return status;
 }
 
 @end

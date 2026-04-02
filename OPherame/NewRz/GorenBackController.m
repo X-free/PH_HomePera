@@ -40,7 +40,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.title = @"Basic Information";
+    self.title = self.navTitle;
     self.customTitleColor = [UIColor whiteColor];
     UIImage *image = [UIImage imageNamed:@"plobac"];
     UIImageView *backgroundImageView = [[UIImageView alloc] init];
@@ -92,15 +92,17 @@
     [self.containerView addSubview:self.tableView];
     
     // 自动调整高度
-    self.tableView.rowHeight = 62.5;
+    self.tableView.rowHeight = 80;
 
     
     // 监听表格内容变化
     [self.tableView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
     
+    CGRect applyFrame = CGRectMake((UIScreen.mainScreen.bounds.size.width - 302)/2.0, self.view.bounds.size.height - 80, 302, 54);
+
     UIButton *applyButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    applyButton.frame = CGRectMake(61, self.view.bounds.size.height - 80, self.view.bounds.size.width - 122, 50);
-    [applyButton setTitle:@"Next step" forState:UIControlStateNormal];
+    applyButton.frame = applyFrame;
+    [applyButton setTitle:@"Next" forState:UIControlStateNormal];
     [applyButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     applyButton.titleLabel.font = [UIFont boldSystemFontOfSize:18];
     [applyButton setBackgroundImage:[UIImage imageNamed:@"bukath"] forState:(UIControlStateNormal)];
@@ -183,14 +185,18 @@
 
                 GworkBackController *controller = [[GworkBackController alloc]init];
                 controller.harukos = self.harukos;
+                controller.navTitle = [species valueForKey:@"downright"];
                 [self.navigationController pushViewController:controller animated:YES];
             }else if ([species[@"pensive"] isEqualToString:@"cupersuchousI"]){
                 GtxlplBackController *controller = [[GtxlplBackController alloc]init];
                 controller.harukos = self.harukos;
+                controller.navTitle = [species valueForKey:@"downright"];
                 [self.navigationController pushViewController:controller animated:YES];
             }else if ([species[@"pensive"] isEqualToString:@"cupersuchousL"]){
                 GpaymBackController *controller = [[GpaymBackController alloc]init];
                 controller.harukos = self.harukos;
+                controller.navTitle = [species valueForKey:@"downright"];
+
                 [self.navigationController pushViewController:controller animated:YES];
             }else if(species == nil){
                 [self cradiatingflipped];
@@ -257,7 +263,7 @@
         [cell.contentView addSubview:titleLabel];
         
         // 输入框/占位文本
-        UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(0, titleLabel.bottom+5, CGRectGetWidth(tableView.frame), 33)];
+        UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(0, titleLabel.bottom+5, UIScreen.mainScreen.bounds.size.width - 60, 40)];
         textField.tag = 101;
         textField.font = [UIFont systemFontOfSize:13];
         textField.delegate = self;
@@ -266,7 +272,7 @@
         [cell.contentView addSubview:textField];
         
         // 设置左边间距
-        UIView *leftPadding = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 12, 33)];
+        UIView *leftPadding = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 12, 40)];
         textField.leftView = leftPadding;
         textField.leftViewMode = UITextFieldViewModeAlways;
     }
@@ -329,7 +335,7 @@
         arrowButton.frame = CGRectMake(0, 0, 15, 15); // 调整大小
         arrowButton.userInteractionEnabled = NO;
         arrowButton.tintColor = [UIColor lightGrayColor];
-        UIView *rightContainer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 30, 33)];
+        UIView *rightContainer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 30, 40)];
         // 调整图标垂直居中
         CGFloat verticalOffset = (textField.frame.size.height - 15) / 2;
         arrowButton.frame = CGRectMake((30-15)/2, verticalOffset, 15, 15);

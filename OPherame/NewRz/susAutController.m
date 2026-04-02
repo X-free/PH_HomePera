@@ -50,15 +50,17 @@
     [self.view addSubview:topView];
     [self uploadviewsTopView:topView];
     
-    UIView *botView = [[UIView alloc]initWithFrame:CGRectMake(8,topView.bottom+18, self.view.width-16, 205)];
+    UIView *botView = [[UIView alloc]initWithFrame:CGRectMake(8,topView.bottom+12, self.view.width-16, 205)];
     botView.backgroundColor = [UIColor whiteColor];
     botView.layer.cornerRadius = 16;
     botView.clipsToBounds = YES;
     [self.view addSubview:botView];
     [self uploadviewsBotView:botView];
     
+    CGRect applyFrame = CGRectMake((UIScreen.mainScreen.bounds.size.width - 302)/2.0, self.view.bounds.size.height - 60, 302, 54);
+
     UIButton *applyButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    applyButton.frame = CGRectMake(61, self.view.bounds.size.height - 80, self.view.bounds.size.width - 122, 50);
+    applyButton.frame = applyFrame;
     [applyButton setTitle:@"OK" forState:UIControlStateNormal];
     [applyButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     applyButton.titleLabel.font = [UIFont boldSystemFontOfSize:18];
@@ -95,7 +97,7 @@
     [sfzIG addSubview:txkkl];
     
     UILabel *top_tit = [[UILabel alloc] initWithFrame:CGRectMake(0, sfzIG.bottom+11, topView.width, 20)];
-    top_tit.text = @"Upload Front ID Card\t\tFace Recognition";
+    top_tit.text = @"ID card\t\tFace Recognition";
     top_tit.textColor = [UIColor blackColor];
     top_tit.font = [UIFont boldSystemFontOfSize:14];
     top_tit.textAlignment = NSTextAlignmentCenter;
@@ -124,7 +126,7 @@
     containerView.layer.masksToBounds = YES;
     
     // 2. 数据数组
-    NSArray *titles = @[@"Real name", @"ID number", @"Birthday"];
+    NSArray *titles = @[@"Full name", @"ID number", @"Date of birth"];
     NSArray *values = @[realName ?: @"", idNumber ?: @"", birthday ?: @""];
     
     // 3. 计算每个项目的高度
@@ -184,18 +186,26 @@
             if ([species[@"pensive"] isEqualToString:@"cupersuchousG"]){
                 GorenBackController *controller = [[GorenBackController alloc]init];
                 controller.harukos = self.harukos;
+                controller.navTitle = [species valueForKey:@"downright"];
+                
                 [self.navigationController pushViewController:controller animated:YES];
             }else if ([species[@"pensive"] isEqualToString:@"cupersuchousH"]){
                 GworkBackController *controller = [[GworkBackController alloc]init];
                 controller.harukos = self.harukos;
+                controller.navTitle = [species valueForKey:@"downright"];
+
                 [self.navigationController pushViewController:controller animated:YES];
             }else if ([species[@"pensive"] isEqualToString:@"cupersuchousI"]){
                 GtxlplBackController *controller = [[GtxlplBackController alloc]init];
                 controller.harukos = self.harukos;
+                controller.navTitle = [species valueForKey:@"downright"];
+
                 [self.navigationController pushViewController:controller animated:YES];
             }else if ([species[@"pensive"] isEqualToString:@"cupersuchousL"]){
                 GpaymBackController *controller = [[GpaymBackController alloc]init];
                 controller.harukos = self.harukos;
+                controller.navTitle = [species valueForKey:@"downright"];
+
                 [self.navigationController pushViewController:controller animated:YES];
             }else if(species == nil){
                 [self cradiatingflipped];

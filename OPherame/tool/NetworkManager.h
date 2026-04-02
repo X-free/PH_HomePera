@@ -126,6 +126,9 @@ NS_ASSUME_NONNULL_BEGIN
 //是否有网络
 + (void)startMonitoringNetworkStatusWithCallback:(NetworkStatusCallback)callback;
 
+// 检查当前网络状态
+- (BOOL)isNetworkAvailable;
+
 
 
 // googleMarket POST请求
