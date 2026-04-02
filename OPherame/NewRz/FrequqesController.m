@@ -47,8 +47,14 @@
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
-// 在视图控制器中实现
+// 在视图控制器中实现（必须在 collectionView 创建并加入视图层级之后调用）
 - (void)setupRefreshControl {
+    if (!self.collectionView) {
+        return;
+    }
+    if (self.refreshControl) {
+        return;
+    }
     // 创建刷新控件
     self.refreshControl = [[UIRefreshControl alloc] init];
     self.refreshControl.tintColor = [UIColor grayColor]; // 设置指示器颜色
@@ -69,11 +75,27 @@
 }
 
 - (void)triggerRefreshProgrammatically {
+    if (!self.collectionView || !self.refreshControl) {
+        return;
+    }
+    // beginRefreshing 要求控件已挂到 UIScrollView，否则会抛 NSInternalInconsistencyException: View must not be nil.
+    if (@available(iOS 10.0, *)) {
+        if (self.collectionView.refreshControl != self.refreshControl) {
+            self.collectionView.refreshControl = self.refreshControl;
+        }
+    } else {
+        if (self.refreshControl.superview != self.collectionView) {
+            [self.collectionView addSubview:self.refreshControl];
+        }
+    }
     // 立即开始刷新动画
     [self.refreshControl beginRefreshing];
     
     // 手动设置 contentOffset 使刷新控件可见
-    [self.collectionView setContentOffset:CGPointMake(0, -self.refreshControl.frame.size.height) animated:YES];
+    CGFloat h = self.refreshControl.frame.size.height;
+    if (h > 0) {
+        [self.collectionView setContentOffset:CGPointMake(0, -h) animated:YES];
+    }
     
     // 触发刷新方法
     [self handleRefresh:self.refreshControl];
@@ -169,9 +191,6 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    
-    [self setupRefreshControl];
-
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -326,6 +345,7 @@
     _collectionView.dataSource = self;
     [_collectionView registerClass:[AuthenticationCell class] forCellWithReuseIdentifier:@"AuthenticationCell"];
     [self.view addSubview:_collectionView];
+    [self setupRefreshControl];
 }
 
 #pragma mark - UICollectionViewDataSource
