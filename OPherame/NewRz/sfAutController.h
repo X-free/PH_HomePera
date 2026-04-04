@@ -16,6 +16,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) NSString *navTitle;
 
+@property (nonatomic, strong) NSArray *mainOptions;
+
+@property (nonatomic, strong) NSArray *moreOptions;
+
+-(void)confirmButtonTappedCamera;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -89,7 +89,7 @@
     NSString *title = [[sender.subviews firstObject] text];
     
     if ([title isEqualToString:@"Go Out"]) {
-        [EKMGPopupView showWithTitle:@"Exit app?" content:@"lt would be a pity to quit\n now.Exclusive rights such as\n priority loanare waiting for you.\n Come andexperience it!" CancelStr:@"Confirm Exit" sureStr:@"Continue to use" confirmAction:^(NSObject * _Nullable obj) {
+        [EKMGPopupView showWithTitle:@"Exit app?" content:@"lt would be a pity to quit\n now.Exclusive rights such as\n priority loanare waiting for you.\n Come andexperience it!" CancelStr:@"Leave" sureStr:@"Continue" confirmAction:^(NSObject * _Nullable obj) {
          
             [[NetworkManager sharedManager] GET:@"/radiating/onthe"
                                           parameters:@{@"minami": [RandomStringGenerator randomlyCallMethod],@"suigei": [RandomStringGenerator randomlyCallMethod]}

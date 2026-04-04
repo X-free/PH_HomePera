@@ -420,6 +420,13 @@
               },
               {
                 "kind": "Conformance",
+                "name": "SendableMetatype",
+                "printedName": "SendableMetatype",
+                "usr": "s:s16SendableMetatypeP",
+                "mangledName": "$ss16SendableMetatypeP"
+              },
+              {
+                "kind": "Conformance",
                 "name": "BitwiseCopyable",
                 "printedName": "BitwiseCopyable",
                 "usr": "s:s15BitwiseCopyableP",
@@ -4207,6 +4214,13 @@
               },
               {
                 "kind": "Conformance",
+                "name": "SendableMetatype",
+                "printedName": "SendableMetatype",
+                "usr": "s:s16SendableMetatypeP",
+                "mangledName": "$ss16SendableMetatypeP"
+              },
+              {
+                "kind": "Conformance",
                 "name": "BitwiseCopyable",
                 "printedName": "BitwiseCopyable",
                 "usr": "s:s15BitwiseCopyableP",
@@ -5821,6 +5835,13 @@
                 "printedName": "Sendable",
                 "usr": "s:s8SendableP",
                 "mangledName": "$ss8SendableP"
+              },
+              {
+                "kind": "Conformance",
+                "name": "SendableMetatype",
+                "printedName": "SendableMetatype",
+                "usr": "s:s16SendableMetatypeP",
+                "mangledName": "$ss16SendableMetatypeP"
               },
               {
                 "kind": "Conformance",
@@ -9762,6 +9783,13 @@
               },
               {
                 "kind": "Conformance",
+                "name": "SendableMetatype",
+                "printedName": "SendableMetatype",
+                "usr": "s:s16SendableMetatypeP",
+                "mangledName": "$ss16SendableMetatypeP"
+              },
+              {
+                "kind": "Conformance",
                 "name": "BitwiseCopyable",
                 "printedName": "BitwiseCopyable",
                 "usr": "s:s15BitwiseCopyableP",
@@ -10432,6 +10460,13 @@
             "printedName": "Sendable",
             "usr": "s:s8SendableP",
             "mangledName": "$ss8SendableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "SendableMetatype",
+            "printedName": "SendableMetatype",
+            "usr": "s:s16SendableMetatypeP",
+            "mangledName": "$ss16SendableMetatypeP"
           }
         ]
       },
@@ -16704,6 +16739,13 @@
           },
           {
             "kind": "Conformance",
+            "name": "SendableMetatype",
+            "printedName": "SendableMetatype",
+            "usr": "s:s16SendableMetatypeP",
+            "mangledName": "$ss16SendableMetatypeP"
+          },
+          {
+            "kind": "Conformance",
             "name": "BitwiseCopyable",
             "printedName": "BitwiseCopyable",
             "usr": "s:s15BitwiseCopyableP",
@@ -17328,7 +17370,7 @@
       "kind": "StringLiteral",
       "offset": 539,
       "length": 8,
-      "value": "\"18.0.1\""
+      "value": "\"18.0.3\""
     },
     {
       "filePath": "\/data\/sandcastle\/boxes\/trunk-git-facebook-ios-sdk\/FBAEMKit\/FBAEMKit\/AEMNetworker.swift",

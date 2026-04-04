@@ -322,8 +322,11 @@
         MFMailComposeViewController *mailVC = [[MFMailComposeViewController alloc] init];
         mailVC.mailComposeDelegate = self;
         
-        // 设置收件人
-        [mailVC setToRecipients:@[[self dictionaryFromEmailString:emailAddress][@"email"]]];
+        // 设置收件人（解析失败时可能为 nil，不能放进 NSArray 字面量）
+        NSString *toEmail = [self dictionaryFromEmailString:emailAddress][@"email"];
+        if (toEmail.length > 0) {
+            [mailVC setToRecipients:@[toEmail]];
+        }
 //        if (mailVC.toRecipients.count == 0) {
 //                NSLog(@"收件人设置失败，请检查邮箱格式");
 //            }

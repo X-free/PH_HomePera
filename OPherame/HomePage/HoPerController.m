@@ -207,7 +207,6 @@ typedef NS_ENUM(NSInteger, UserStatus) {
     
     // "Home Peru" 标题
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, [self.view safeAreaBottom]+30, 150, 30)];
-    titleLabel.text = @"Credit Peso";
     titleLabel.textColor = [UIColor whiteColor];
     titleLabel.font = [UIFont boldSystemFontOfSize:20];
     [self.scrollView addSubview:titleLabel];

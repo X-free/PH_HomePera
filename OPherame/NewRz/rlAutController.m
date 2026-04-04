@@ -226,6 +226,7 @@
                 controller.harukos = self.harukos;
                 controller.vegetable = responseObject[@"thump"][@"wedged"][@"vegetable"];
                 controller.imitation = [responseObject[@"thump"][@"imitation"] doubleValue];
+                controller.navTitle = self.navTitle;
                 [self.navigationController pushViewController:controller animated:YES];
             }else if ([responseObject[@"thump"][@"wedged"][@"during"] isEqualToNumber:@1]&&[responseObject[@"thump"][@"combine"] isEqualToNumber:@1]){
                 //跳转认证结果页面.
@@ -234,6 +235,7 @@
                 controller.unique = responseObject[@"thump"][@"wedged"][@"sushis"][@"unique"];
                 controller.birthday = responseObject[@"thump"][@"wedged"][@"sushis"][@"vinegar"];
                 controller.vegetable = responseObject[@"thump"][@"wedged"][@"vegetable"];
+                controller.navTitle = self.navTitle;
                 controller.harukos = self.harukos;
                 [self.navigationController pushViewController:controller animated:YES];
             }

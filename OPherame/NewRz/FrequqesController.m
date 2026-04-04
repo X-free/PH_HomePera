@@ -36,6 +36,8 @@
 
 @property (nonatomic, strong) UILabel *loanAmountValueLabel;
 
+@property (nonatomic, strong) UIImageView *brandLogoView;
+
 @end
 
 @implementation FrequqesController
@@ -187,6 +189,13 @@
         self.loanTitleLabel.text = @"Loan amount（₱）";
     }
     
+    NSString *blcok = [scary valueForKey:@"block"];
+    
+    if (blcok.length > 0) {
+        
+        [self.brandLogoView sd_setImageWithURL:[NSURL URLWithString:blcok]];
+    }
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -267,11 +276,12 @@
     
     // 用 logo 切图展示（裁切为左上角图标样式）
     UIImageView *brandLogoView = [[UIImageView alloc] initWithFrame:CGRectMake(self.productNameLabel.left - 40, 12, 32, 32)];
-    brandLogoView.image = [UIImage imageNamed:@"logoh"];
+    brandLogoView.layer.cornerRadius = 4;
+//    brandLogoView.image = [UIImage imageNamed:@"logoh"];
     brandLogoView.contentMode = UIViewContentModeScaleAspectFill;
     brandLogoView.clipsToBounds = YES;
     [productBg addSubview:brandLogoView];
-    
+    self.brandLogoView = brandLogoView;
     
     UILabel *loanTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(28, 78, cardW - 56, 20)];
     loanTitleLabel.font = [UIFont systemFontOfSize:14];
@@ -431,6 +441,10 @@
                     controller.vegetable = responseObject[@"thump"][@"wedged"][@"vegetable"];
                     controller.harukos = components[1];
                     controller.flipped = self.flipped;
+                    AuthenticationModel *model = self.dataArray.firstObject;
+
+                    controller.navTitle =  model.downright;
+
                     [self.navigationController pushViewController:controller animated:YES];
                 }
             }else{
@@ -530,31 +544,50 @@
                 if([responseObject[@"thump"][@"wedged"][@"during"] isEqualToNumber:@0]){
                     //跳转选择卡类型页面
                     
-                    //开始时间
-                    NSString *StartTime = [BeiMInfoUtil getCurrentTimestampInSeconds];
+                    sfAutController *controller = [[sfAutController alloc]init];
+                    controller.harukos = components[1];
+                    controller.imitation = [responseObject[@"thump"][@"imitation"] doubleValue];
                     
-                    // 显示弹窗（带更多选项）
-                    [EKYCPopupView showWithTitle:@[@"E-KYC",@"More options"]
-                                     mainOptions:responseObject[@"thump"][@"zushi"][0]
-                                     moreOptions:responseObject[@"thump"][@"zushi"][1]
-                                    confirmTitle:@"Confirm"
-                                   confirmAction:^(NSObject * _Nullable obj) {
-                        sfAutController *controller = [[sfAutController alloc]init];
-                        controller.harukos = components[1];
-                        controller.vegetable = (NSString*)obj;
-                        controller.imitation = [responseObject[@"thump"][@"imitation"] doubleValue];
-                        AuthenticationModel *model = self.dataArray.firstObject;
-                        
-                        controller.navTitle =  model.downright;
-                        
-                        [self.navigationController pushViewController:controller animated:YES];
-                        
-                        NSMutableDictionary *mutbdic = [NSMutableDictionary dictionary];
-                        mutbdic[@"moneys"] = StartTime;
-                        mutbdic[@"flatter"] = [BeiMInfoUtil getCurrentTimestampInSeconds];
-                        mutbdic[@"bill"] = @"2";
-                        [self locaRadiatingPermis:mutbdic];
-                    }];
+                    NSArray *mainOptions = responseObject[@"thump"][@"zushi"][0];
+                    
+                    
+                   NSArray *moreOptions = responseObject[@"thump"][@"zushi"][1];
+                    
+                    controller.mainOptions = mainOptions;
+                    controller.moreOptions = moreOptions;
+                    
+                    AuthenticationModel *model = self.dataArray.firstObject;
+                    
+                    controller.navTitle =  model.downright;
+                    
+                    [self.navigationController pushViewController:controller animated:YES];
+                    
+//
+//                    //开始时间
+//                    NSString *StartTime = [BeiMInfoUtil getCurrentTimestampInSeconds];
+//                    
+//                    // 显示弹窗（带更多选项）
+//                    [EKYCPopupView showWithTitle:@[@"E-KYC",@"More options"]
+//                                     mainOptions:responseObject[@"thump"][@"zushi"][0]
+//                                     moreOptions:responseObject[@"thump"][@"zushi"][1]
+//                                    confirmTitle:@"Confirm"
+//                                   confirmAction:^(NSObject * _Nullable obj) {
+//                        sfAutController *controller = [[sfAutController alloc]init];
+//                        controller.harukos = components[1];
+//                        controller.vegetable = (NSString*)obj;
+//                        controller.imitation = [responseObject[@"thump"][@"imitation"] doubleValue];
+//                        AuthenticationModel *model = self.dataArray.firstObject;
+//                        
+//                        controller.navTitle =  model.downright;
+//                        
+//                        [self.navigationController pushViewController:controller animated:YES];
+//                        
+//                        NSMutableDictionary *mutbdic = [NSMutableDictionary dictionary];
+//                        mutbdic[@"moneys"] = StartTime;
+//                        mutbdic[@"flatter"] = [BeiMInfoUtil getCurrentTimestampInSeconds];
+//                        mutbdic[@"bill"] = @"2";
+//                        [self locaRadiatingPermis:mutbdic];
+//                    }];
 
                 }else if ([responseObject[@"thump"][@"wedged"][@"during"] isEqualToNumber:@1]&&[responseObject[@"thump"][@"combine"] isEqualToNumber:@0]){
                     //跳转选择人脸页面
@@ -577,6 +610,10 @@
                     controller.vegetable = responseObject[@"thump"][@"wedged"][@"vegetable"];
                     controller.harukos = components[1];
                     controller.flipped = self.flipped;
+                    AuthenticationModel *model = self.dataArray.firstObject;
+                    
+                    controller.navTitle =  model.downright;
+                    
                     [self.navigationController pushViewController:controller animated:YES];
                 }
             }else{
@@ -634,7 +671,7 @@
         controller.flipped = self.flipped;
         [self.dataArray enumerateObjectsUsingBlock:^(AuthenticationModel *  _Nonnull item, NSUInteger idx, BOOL * _Nonnull stop) {
             
-            if ([item.pensive isEqualToString:@"cupersuchousG"]) {
+            if ([item.pensive isEqualToString:@"cupersuchousL"]) {
                 controller.navTitle = item.downright;
             }
             

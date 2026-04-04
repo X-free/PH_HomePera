@@ -37,7 +37,7 @@
         _contentView = [UIButton buttonWithType:UIButtonTypeCustom];
         _contentView.titleLabel.numberOfLines = 0;
         _contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        UIWindow *window = [[[UIApplication sharedApplication] windows] firstObject];
+        UIWindow *window = [UIApplication sharedApplication].delegate.window;
         [window addSubview:_contentView];
     }
     return _contentView;
@@ -119,7 +119,7 @@
 
 + (void)showWithText:(id)text duration:(CGFloat)duration{
     
-    UIWindow *window = [[[UIApplication sharedApplication] windows] firstObject];
+    UIWindow *window = [UIApplication sharedApplication].delegate.window;
     [SHToast showWithText:text offset:window.center.y duration:duration];
 }
 
@@ -142,7 +142,7 @@
 #pragma mark 显示
 - (void)showToastWithDuration:(CGFloat)duration offset:(CGFloat)offset{
     
-    UIWindow *window = [[[UIApplication sharedApplication] windows] firstObject];
+    UIWindow *window = [UIApplication sharedApplication].delegate.window;
     self.contentView.center = CGPointMake(window.center.x,offset);
     [self showAnimation];
     [self performSelector:@selector(hideAnimation) withObject:nil afterDelay:duration];
@@ -308,7 +308,7 @@
 #pragma mark 显示动画
 - (void)showPushAnimation{
     
-    UIWindow *window = [[[UIApplication sharedApplication] windows] firstObject];
+    UIWindow *window = [UIApplication sharedApplication].delegate.window;
     window.windowLevel = UIWindowLevelAlert;
     
     __block CGRect frame = self.contentView.frame;
@@ -322,7 +322,7 @@
 #pragma mark 隐藏动画
 - (void)hidePushAnimation{
     
-    UIWindow *window = [[[UIApplication sharedApplication] windows] firstObject];
+    UIWindow *window = [UIApplication sharedApplication].delegate.window;
     window.windowLevel = UIWindowLevelNormal;
     
     __block CGRect frame = self.contentView.frame;
@@ -348,7 +348,7 @@
     dispatch_once(&onceToken, ^{
         model = [[SHToastStyle alloc]init];
         
-        model.time = 3;
+        model.time = 2;
         model.font = [UIFont systemFontOfSize:14];
         model.textColor = [UIColor whiteColor];
         model.color = [[UIColor blackColor] colorWithAlphaComponent:0.7];

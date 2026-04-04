@@ -386,7 +386,10 @@
     riLabel.text = dic[@"fixing"];
     [contentView addSubview:riLabel];
     
-    NSArray*ary = @[@[dic[@"aware"],dic[@"expectations"]],@[dic[@"playfully"],dic[@"broached"]]];
+    NSArray *ary = @[
+        @[dic[@"aware"] ?: @"", dic[@"expectations"] ?: @""],
+        @[dic[@"playfully"] ?: @"", dic[@"broached"] ?: @""]
+    ];
     for (int i = 0; i<ary.count; i++) {
         NSArray *marAry = ary[i];
         UILabel *titl = [[UILabel alloc] initWithFrame:CGRectMake(43.5, riLabel.bottom+40+(21+27)*i, 180, 21)];
@@ -448,7 +451,10 @@
     [contentView addSubview:riLabel];
     
     
-    NSArray*ary = @[@[dic[@"aware"],dic[@"expectations"]],@[dic[@"playfully"],dic[@"broached"]]];
+    NSArray *ary = @[
+        @[dic[@"aware"] ?: @"", dic[@"expectations"] ?: @""],
+        @[dic[@"playfully"] ?: @"", dic[@"broached"] ?: @""]
+    ];
     for (int i = 0; i<ary.count; i++) {
         NSArray *marAry = ary[i];
         UILabel *titl = [[UILabel alloc] initWithFrame:CGRectMake(43.5, riLabel.bottom+40+(21+27)*i, 180, 21)];
@@ -506,7 +512,10 @@
     [contentView addSubview:riLabel];
     
     
-    NSArray*ary = @[@[dic[@"aware"],dic[@"expectations"]],@[dic[@"playfully"],dic[@"broached"]]];
+    NSArray *ary = @[
+        @[dic[@"aware"] ?: @"", dic[@"expectations"] ?: @""],
+        @[dic[@"playfully"] ?: @"", dic[@"broached"] ?: @""]
+    ];
     for (int i = 0; i<ary.count; i++) {
         NSArray *marAry = ary[i];
         UILabel *titl = [[UILabel alloc] initWithFrame:CGRectMake(43.5, riLabel.bottom+35+(21+27)*i, 180, 21)];

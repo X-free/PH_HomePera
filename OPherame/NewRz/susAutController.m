@@ -34,7 +34,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.title = @"";
+    self.title = self.navTitle;
+    
     UIImage *image = [UIImage imageNamed:@"plobac"];
     UIImageView *backgroundImageView = [[UIImageView alloc] init];
     backgroundImageView.image = image;

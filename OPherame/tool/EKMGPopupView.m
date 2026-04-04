@@ -247,7 +247,7 @@
                      city:(NSString *_Nonnull)city{
     
     NSLog(@"Selected Address: %@, %@, %@", region, province, city);
-    _confirmBlock(@[region, province, city]);
+    _confirmBlock(@[region ?: @"", province ?: @"", city ?: @""]);
 }
 
 
@@ -391,7 +391,7 @@
     
     // 内容视图
     UIImageView *imgbac = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"anzhuxiao"]];
-    imgbac.frame = CGRectMake(16, 212, _backgroundView.width-32, 313);
+    imgbac.frame = CGRectMake(16, 160 * UIScreen.mainScreen.bounds.size.width/375.0, _backgroundView.width-32, 313);
     imgbac.userInteractionEnabled = YES;
     [_backgroundView addSubview:imgbac];
     
@@ -440,14 +440,14 @@
     UIButton *ContinueBut = [UIButton buttonWithType:UIButtonTypeCustom];
     ContinueBut.frame = CGRectMake(_backgroundView.width/2-150/2, imgbac.bottom+25, 150, 42);
     [ContinueBut setBackgroundImage:[UIImage imageNamed:@"inuebut"] forState:(UIControlStateNormal)];
-    [ContinueBut setTitle:@"Continue to use" forState:UIControlStateNormal];
+    [ContinueBut setTitle:@"Cancel" forState:UIControlStateNormal];
     [ContinueBut addTarget:self action:@selector(hide) forControlEvents:UIControlEventTouchUpInside];
     [ContinueBut setTitleColor:[UIColor whiteColor] forState:(UIControlStateNormal)];
     [_backgroundView addSubview:ContinueBut];
     
     UIButton *ConfirmBut = [UIButton buttonWithType:UIButtonTypeSystem];
     ConfirmBut.frame = CGRectMake(_backgroundView.width/2-230/2, ContinueBut.bottom+14, 230, 42);
-    [ConfirmBut setTitle:@"Confirm account cancellation" forState:UIControlStateNormal];
+    [ConfirmBut setTitle:@"Account cancellation" forState:UIControlStateNormal];
     [ConfirmBut setTitleColor:[UIView colorFromRGB:0xC1C1C1] forState:UIControlStateNormal];
     [ConfirmBut addTarget:self action:@selector(ConfirmButThooud) forControlEvents:UIControlEventTouchUpInside];
     [_backgroundView addSubview:ConfirmBut];

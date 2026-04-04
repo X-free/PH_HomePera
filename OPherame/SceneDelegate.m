@@ -6,6 +6,7 @@
 //
 
 #import "SceneDelegate.h"
+#import "AppDelegate.h"
 #import "VeiLogController.h"
 #import "HoPerController.h"
 #import <IQKeyboardManager/IQKeyboardManager.h>
@@ -42,6 +43,11 @@
         OPhNavigationController *navOdController = [[OPhNavigationController alloc]initWithRootViewController:[[HoPerController alloc] init]];
         self.window.rootViewController = navOdController;
         [self.window makeKeyAndVisible];
+        
+        if ([UIApplication sharedApplication].delegate) {
+            AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+            appDelegate.window = self.window;
+        }
     }
 }
 

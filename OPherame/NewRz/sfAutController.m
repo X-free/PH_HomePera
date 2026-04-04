@@ -6,6 +6,7 @@
 //
 
 #import "sfAutController.h"
+#import "sfAutController+KYC.h"
 
 @interface sfAutController ()<OPhNavigationBackButtonDelegate>
 @property (nonatomic, strong)UIImageView *sfzIG;
@@ -129,7 +130,12 @@
     }
 }
 
--(void)confirmButtonTapped{
+
+-(void)confirmButtonTapped {    
+    [self kycTypeGuide];
+}
+
+-(void)confirmButtonTappedCamera{
     
     
     //开始时间

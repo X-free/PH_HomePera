@@ -24,7 +24,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.title = @"Personal Center";
+    self.title = @"Profile";
     self.customTitleColor = [UIColor whiteColor];
     UIImage *image = [UIImage imageNamed:@"grbacdd"];
     UIImageView *backgroundImageView = [[UIImageView alloc] init];

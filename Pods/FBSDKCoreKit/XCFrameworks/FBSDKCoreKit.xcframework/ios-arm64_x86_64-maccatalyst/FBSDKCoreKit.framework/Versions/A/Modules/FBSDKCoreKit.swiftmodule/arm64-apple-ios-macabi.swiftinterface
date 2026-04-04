@@ -1,7 +1,7 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 6.1.2 effective-5.10 (swiftlang-6.1.2.1.2 clang-1700.0.13.5)
+// swift-compiler-version: Apple Swift version 6.2.3 effective-5.10 (swiftlang-6.2.3.3.21 clang-1700.6.3.2)
 // swift-module-flags: -target arm64-apple-ios13.1-macabi -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -module-name FBSDKCoreKit
-// swift-module-flags-ignorable: -no-verify-emitted-module-interface -interface-compiler-version 6.1.2
+// swift-module-flags-ignorable: -no-verify-emitted-module-interface -formal-cxx-interoperability-mode=off -interface-compiler-version 6.2.3
 import AdSupport
 import AppTrackingTransparency
 import AuthenticationServices
@@ -34,10 +34,16 @@ extension FBSDKCoreKit.AccessToken {
   @objc final public let targets: [any FBSDKCoreKit.AppLinkTargetProtocol]
   @objc final public let webURL: Foundation.URL?
   @objc final public var isBackToReferrer: Swift.Bool
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc(initWithSourceURL:targets:webURL:) convenience public init(sourceURL: Foundation.URL?, targets: [any FBSDKCoreKit.AppLinkTargetProtocol], webURL: Foundation.URL?)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @available(*, deprecated, message: "Please use designated init to instantiate an AppLink. This method will be removed in future releases.\"")
   @objc(appLinkWithSourceURL:targets:webURL:) public static func appLink(sourceURL: Foundation.URL?, targets: [any FBSDKCoreKit.AppLinkTargetProtocol], webURL: Foundation.URL?) -> any FBSDKCoreKit._AppLinkProtocol
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc(initWithSourceURL:targets:webURL:isBackToReferrer:) public init(sourceURL: Foundation.URL?, targets: [any FBSDKCoreKit.AppLinkTargetProtocol], webURL: Foundation.URL?, isBackToReferrer: Swift.Bool)
+  #endif
   @objc deinit
 }
 @available(iOSApplicationExtension, unavailable, message: "Not available in app extension")
@@ -57,13 +63,19 @@ extension FBSDKCoreKit.AccessToken {
   @objc final public var navigationType: FBSDKCoreKit.AppLinkNavigationType {
     @objc get
   }
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc(initWithAppLink:extras:appLinkData:) public init(appLink: FBSDKCoreKit.AppLink?, extras: [Swift.String : Any], appLinkData: [Swift.String : Any])
+  #endif
   @available(*, deprecated, message: "Please use init(appLink:extras:appLinkData:) to instantiate an `AppLinkNavigation`.\nThis method will be removed in the next major version.\"")
   @objc(initWithAppLink:extras:appLinkData:settings:) convenience public init(appLink: FBSDKCoreKit.AppLink, extras: [Swift.String : Any], appLinkData: [Swift.String : Any], settings: any FBSDKCoreKit.SettingsProtocol)
+  #if compiler(>=5.3) && $NonescapableTypes
   @available(*, deprecated, message: "Please use designated init to instantiate an AppLinkNavigation. This method will be removed in future releases.\"")
   @objc(navigationWithAppLink:extras:appLinkData:settings:) public static func navigation(with appLink: FBSDKCoreKit.AppLink?, extras: [Swift.String : Any], appLinkData: [Swift.String : Any], settings: any FBSDKCoreKit.SettingsProtocol) -> FBSDKCoreKit.AppLinkNavigation
+  #endif
   @objc(callbackAppLinkDataForAppWithName:url:) public static func callbackAppLinkData(forApp appName: Swift.String, url: Swift.String) -> [Swift.String : [Swift.String : Swift.String]]
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc(navigate:) final public func navigate(handler: FBSDKCoreKit.AppLinkNavigationBlock?)
+  #endif
   @objc(resolveAppLink:handler:) public static func resolveAppLink(_ destination: Foundation.URL, handler: @escaping FBSDKCoreKit.AppLinkBlock)
   @objc(resolveAppLink:resolver:handler:) public static func resolveAppLink(_ destination: Foundation.URL, resolver: any FBSDKCoreKit.AppLinkResolving, handler: @escaping FBSDKCoreKit.AppLinkBlock)
   @objc(navigateToAppLink:handler:) public static func navigate(to appLink: FBSDKCoreKit.AppLink, handler: @escaping FBSDKCoreKit.AppLinkNavigationBlock)
@@ -83,9 +95,13 @@ extension FBSDKCoreKit.AccessToken {
   @objc final public let url: Foundation.URL?
   @objc final public let appStoreId: Swift.String?
   @objc final public let appName: Swift.String
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc(initWithURL:appStoreId:appName:) public init(url: Foundation.URL?, appStoreId: Swift.String?, appName: Swift.String)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @available(*, deprecated, message: "Please use designated init to instantiate an AppLinkTarget. This method will be removed in future releases.\"")
   @objc(appLinkTargetWithURL:appStoreId:appName:) public static func appLinkTargetWithURL(url: Foundation.URL?, appStoreId: Swift.String?, appName: Swift.String) -> FBSDKCoreKit.AppLinkTarget
+  #endif
   @objc deinit
 }
 @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objcMembers @objc(FBSDKApplicationDelegate) final public class ApplicationDelegate : ObjectiveC.NSObject {
@@ -97,10 +113,14 @@ extension FBSDKCoreKit.AccessToken {
   @objc(application:continueUserActivity:) final public func application(_ application: UIKit.UIApplication, continue userActivity: Foundation.NSUserActivity) -> Swift.Bool
   @discardableResult
   @objc(application:openURL:options:) final public func application(_ application: UIKit.UIApplication, open url: Foundation.URL, options: [UIKit.UIApplication.OpenURLOptionsKey : Any]) -> Swift.Bool
+  #if compiler(>=5.3) && $NonescapableTypes
   @discardableResult
   @objc(application:openURL:sourceApplication:annotation:) final public func application(_ application: UIKit.UIApplication, open url: Foundation.URL, sourceApplication: Swift.String?, annotation: Any?) -> Swift.Bool
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc @discardableResult
   final public func application(_ application: UIKit.UIApplication, didFinishLaunchingWithOptions launchOptions: [UIKit.UIApplication.LaunchOptionsKey : Any]? = nil) -> Swift.Bool
+  #endif
   @objc final public func addObserver(_ observer: any FBSDKCoreKit.FBSDKApplicationObserving)
   @objc final public func removeObserver(_ observer: any FBSDKCoreKit.FBSDKApplicationObserving)
   @objc deinit
@@ -126,7 +146,9 @@ extension FBSDKCoreKit.AccessToken {
   final public let userLocation: [Swift.String : Swift.String]?
   final public let userGender: Swift.String?
   final public let userLink: Swift.String?
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc(initWithEncodedClaims:nonce:) convenience public init?(encodedClaims: Swift.String, nonce expectedNonce: Swift.String)
+  #endif
   @objc deinit
 }
 @objc(FBSDKCAPIReporter) public protocol CAPIReporter {
@@ -140,10 +162,18 @@ extension FBSDKCoreKit.AccessToken {
   @objc deinit
 }
 @_inheritsConvenienceInitializers @objcMembers @objc(FBSDKIcon) open class FBIcon : ObjectiveC.NSObject {
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc open func path(with size: CoreFoundation.CGSize) -> CoreGraphics.CGPath?
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc public func image(size: CoreFoundation.CGSize) -> UIKit.UIImage?
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc public func image(size: CoreFoundation.CGSize, color: UIKit.UIColor) -> UIKit.UIImage?
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc public func image(size: CoreFoundation.CGSize, scale: CoreFoundation.CGFloat, color: UIKit.UIColor) -> UIKit.UIImage?
+  #endif
   @objc override dynamic public init()
   @objc deinit
 }
@@ -164,10 +194,16 @@ extension FBSDKCoreKit.AccessToken {
     @objc get
     @objc set
   }
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc(initWith:profile:) @_Concurrency.MainActor @preconcurrency public init(frame: CoreFoundation.CGRect, profile: FBSDKCoreKit.Profile? = nil)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc(initWithProfile:) @_Concurrency.MainActor @preconcurrency convenience public init(profile: FBSDKCoreKit.Profile? = nil)
+  #endif
   @objc(initWithFrame:) @_Concurrency.MainActor @preconcurrency override dynamic public init(frame: CoreFoundation.CGRect)
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc(initWithCoder:) @_Concurrency.MainActor @preconcurrency required dynamic public init?(coder: Foundation.NSCoder)
+  #endif
   @objc @_Concurrency.MainActor @preconcurrency final public func setNeedsImageUpdate()
   @objc deinit
 }
@@ -198,12 +234,16 @@ public typealias CAPIGBlock = (Swift.Bool) -> Swift.Void
 }
 final public class KeychainStoreFactory : FBSDKCoreKit.KeychainStoreProviding {
   public init()
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc final public func createKeychainStore(service: Swift.String, accessGroup: Swift.String?) -> any FBSDKCoreKit.KeychainStoreProtocol
+  #endif
   @objc deinit
 }
 @objc(FBSDKMACARuleMatching) public protocol MACARuleMatching {
   @objc func enable()
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc func processParameters(_ params: Foundation.NSDictionary?, event: Swift.String?) -> Foundation.NSDictionary?
+  #endif
 }
 public enum Permission : Swift.Hashable, Swift.ExpressibleByStringLiteral {
   case publicProfile
@@ -264,29 +304,41 @@ extension FBSDKCoreKit.Profile {
     case album
     case small
     case large
+    #if compiler(>=5.3) && $NonescapableTypes
     public init?(rawValue: Swift.UInt)
+    #endif
     public typealias RawValue = Swift.UInt
     public var rawValue: Swift.UInt {
       get
     }
   }
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc(imageURLForPictureMode:size:) final public func imageURL(forMode pictureMode: FBSDKCoreKit.Profile.PictureMode, size: CoreFoundation.CGSize) -> Foundation.URL?
+  #endif
 }
 extension FBSDKCoreKit.Profile {
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc(loadCurrentProfileWithCompletion:) public static func loadCurrentProfile(completion: FBSDKCoreKit.ProfileBlock?)
+  #endif
 }
 extension FBSDKCoreKit.Profile : FBSDKCoreKit.ProfileProviding {
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc(currentProfile) public static var current: FBSDKCoreKit.Profile? {
     @objc get
     @objc set
   }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc public static func fetchCachedProfile() -> Self?
+  #endif
 }
 extension FBSDKCoreKit.Profile : Foundation.NSSecureCoding {
   @objc public static var supportsSecureCoding: Swift.Bool {
     @objc get
   }
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc convenience dynamic public init?(coder decoder: Foundation.NSCoder)
+  #endif
   @objc final public func encode(with encoder: Foundation.NSCoder)
 }
 @objcMembers @objc(FBSDKProfile) final public class Profile : ObjectiveC.NSObject {
@@ -310,21 +362,35 @@ extension FBSDKCoreKit.Profile : Foundation.NSSecureCoding {
     @objc get
     @objc set
   }
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc(initWithUserID:firstName:middleName:lastName:name:linkURL:refreshDate:permissions:) convenience public init(userID: FBSDKCoreKit.UserIdentifier, firstName: Swift.String?, middleName: Swift.String?, lastName: Swift.String?, name: Swift.String?, linkURL: Foundation.URL?, refreshDate: Foundation.Date?, permissions: Swift.Set<Swift.String>? = nil)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc(initWithUserID:firstName:middleName:lastName:name:linkURL:refreshDate:imageURL:email:friendIDs:birthday:ageRange:hometown:location:gender:permissions:) convenience public init(userID: FBSDKCoreKit.UserIdentifier, firstName: Swift.String? = nil, middleName: Swift.String? = nil, lastName: Swift.String? = nil, name: Swift.String? = nil, linkURL: Foundation.URL? = nil, refreshDate: Foundation.Date? = Date(), imageURL: Foundation.URL? = nil, email: Swift.String? = nil, friendIDs: [FBSDKCoreKit.UserIdentifier]? = nil, birthday: Foundation.Date? = nil, ageRange: FBSDKCoreKit.UserAgeRange? = nil, hometown: FBSDKCoreKit.Location? = nil, location: FBSDKCoreKit.Location? = nil, gender: Swift.String? = nil, permissions: Swift.Set<Swift.String>? = nil)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc(initWithUserID:firstName:middleName:lastName:name:linkURL:refreshDate:imageURL:email:friendIDs:birthday:ageRange:hometown:location:gender:isLimited:permissions:) public init(userID: FBSDKCoreKit.UserIdentifier, firstName: Swift.String?, middleName: Swift.String?, lastName: Swift.String?, name: Swift.String?, linkURL: Foundation.URL?, refreshDate: Foundation.Date?, imageURL: Foundation.URL?, email: Swift.String?, friendIDs: [FBSDKCoreKit.UserIdentifier]?, birthday: Foundation.Date?, ageRange: FBSDKCoreKit.UserAgeRange?, hometown: FBSDKCoreKit.Location?, location: FBSDKCoreKit.Location?, gender: Swift.String?, isLimited: Swift.Bool, permissions: Swift.Set<Swift.String>? = nil)
+  #endif
   @available(*, deprecated, message: "This method is deprecated and will be removed in the next major release. Use `isUpdatedWithAccessTokenChange` instead.")
   @objc(enableUpdatesOnAccessTokenChange:) public static func enableUpdatesOnAccessTokenChange(_ enabled: Swift.Bool)
   @objc deinit
 }
 @objc(FBSDKProfileProviding) public protocol ProfileProviding {
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc(currentProfile) static var current: FBSDKCoreKit.Profile? { get set }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc static func fetchCachedProfile() -> FBSDKCoreKit.Profile?
+  #endif
 }
 @_inheritsConvenienceInitializers @objc(FBSDKProtectedModeManager) final public class ProtectedModeManager : ObjectiveC.NSObject, FBSDKCoreKit._AppEventsParameterProcessing {
   @objc final public func enable()
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc final public func processParameters(_ parameters: [FBSDKCoreKit.AppEvents.ParameterName : Any]?, eventName: FBSDKCoreKit.AppEvents.Name?) -> [FBSDKCoreKit.AppEvents.ParameterName : Any]?
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc public static func isProtectedModeApplied(parameters: [FBSDKCoreKit.AppEvents.ParameterName : Any]?) -> Swift.Bool
+  #endif
   @objc override dynamic public init()
   @objc deinit
 }
@@ -338,11 +404,15 @@ public enum LoginTooltipError : Swift.Error {
   }
 }
 @objc @_inheritsConvenienceInitializers final public class ServerConfigurationProvider : ObjectiveC.NSObject {
+  #if compiler(>=5.3) && $NonescapableTypes
   final public var loggingToken: Swift.String? {
     get
   }
+  #endif
   final public func shouldUseSafariViewController(forDialogName dialogName: Swift.String) -> Swift.Bool
+  #if compiler(>=5.3) && $NonescapableTypes
   final public func loadServerConfiguration(completion: FBSDKCoreKit.LoginTooltipBlock?)
+  #endif
   @objc override dynamic public init()
   @objc deinit
 }
@@ -408,26 +478,36 @@ extension FBSDKCoreKit.Settings {
     @objc set
   }
   @objc final public var isGraphErrorRecoveryEnabled: Swift.Bool
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc final public var appID: Swift.String? {
     @objc get
     @objc set
   }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc final public var appURLSchemeSuffix: Swift.String? {
     @objc get
     @objc set
   }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc final public var clientToken: Swift.String? {
     @objc get
     @objc set
   }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc final public var displayName: Swift.String? {
     @objc get
     @objc set
   }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc final public var facebookDomainPart: Swift.String? {
     @objc get
     @objc set
   }
+  #endif
   @objc final public var graphAPIVersion: Swift.String {
     @objc get
     @objc set
@@ -450,11 +530,17 @@ extension FBSDKCoreKit.Settings {
   @objc final public var isDataProcessingRestricted: Swift.Bool {
     @objc get
   }
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc final public var persistableDataProcessingOptions: [FBSDKCoreKit.DataProcessingOptionKey.RawValue : Any]? {
     @objc get
   }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc final public func setDataProcessingOptions(_ options: [Swift.String]?)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc final public func setDataProcessingOptions(_ options: [Swift.String]?, country: Swift.Int32, state: Swift.Int32)
+  #endif
   @objc final public var loggingBehaviors: Swift.Set<FBSDKCoreKit.LoggingBehavior> {
     @objc get
     @objc set
@@ -472,32 +558,52 @@ extension FBSDKCoreKit.Settings {
   @objc final public var isATETimeSufficientlyDelayed: Swift.Bool {
     @objc get
   }
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc final public var installTimestamp: Foundation.Date? {
     @objc get
   }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc final public var advertiserTrackingEnabledTimestamp: Foundation.Date? {
     @objc get
   }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @available(*, deprecated, message: "This property is deprecated and will be removed in the next major release. Use `graphAPIDebugParameterValue` instead.")
   @objc final public var graphAPIDebugParamValue: Swift.String? {
     @objc get
   }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc final public var graphAPIDebugParameterValue: Swift.String? {
     @objc get
   }
+  #endif
   @objc final public var isDomainErrorEnabled: Swift.Bool
   @objc override dynamic public init()
   @objc deinit
 }
 @objc(FBSDKSettings) public protocol SettingsProtocol {
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc var appID: Swift.String? { get set }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc var clientToken: Swift.String? { get set }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc var userAgentSuffix: Swift.String? { get set }
+  #endif
   @objc var sdkVersion: Swift.String { get }
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc var displayName: Swift.String? { get set }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc var facebookDomainPart: Swift.String? { get set }
+  #endif
   @objc var loggingBehaviors: Swift.Set<FBSDKCoreKit.LoggingBehavior> { get set }
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc var appURLSchemeSuffix: Swift.String? { get set }
+  #endif
   @objc var isDataProcessingRestricted: Swift.Bool { get }
   @objc var isAutoLogAppEventsEnabled: Swift.Bool { get }
   @objc @available(*, deprecated, message: "This property is deprecated and will be removed in the next major release. Use `isCodelessDebugLogEnabled` instead.")
@@ -511,23 +617,37 @@ extension FBSDKCoreKit.Settings {
   @objc var isATETimeSufficientlyDelayed: Swift.Bool { get }
   @objc var isSKAdNetworkReportEnabled: Swift.Bool { get }
   @objc var advertisingTrackingStatus: FBSDKCoreKit.AdvertisingTrackingStatus { get }
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc var installTimestamp: Foundation.Date? { get }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc var advertiserTrackingEnabledTimestamp: Foundation.Date? { get }
+  #endif
   @objc var isEventDataUsageLimited: Swift.Bool { get set }
   @objc var shouldUseTokenOptimizations: Swift.Bool { get set }
   @objc var graphAPIVersion: Swift.String { get set }
   @objc var isGraphErrorRecoveryEnabled: Swift.Bool { get set }
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc @available(*, deprecated, message: "This property is deprecated and will be removed in the next major release. Use `graphAPIDebugParameterValue` instead.")
   var graphAPIDebugParamValue: Swift.String? { get }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc var graphAPIDebugParameterValue: Swift.String? { get }
+  #endif
   @objc @available(*, deprecated, message: "This property is deprecated and will be removed in the next major release. Use `isAdvertiserTrackingEnabled` instead.")
   var advertiserTrackingEnabled: Swift.Bool { get set }
   @objc var isAdvertiserTrackingEnabled: Swift.Bool { get set }
   @objc var shouldUseCachedValuesForExpensiveMetadata: Swift.Bool { get set }
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc var persistableDataProcessingOptions: [FBSDKCoreKit.DataProcessingOptionKey.RawValue : Any]? { get }
+  #endif
   @objc var isDomainErrorEnabled: Swift.Bool { get set }
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc func setDataProcessingOptions(_ options: [Swift.String]?)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc func setDataProcessingOptions(_ options: [Swift.String]?, country: Swift.Int32, state: Swift.Int32)
+  #endif
 }
 public enum DialogConfigurationName {
   public static let message: Swift.String
@@ -535,9 +655,11 @@ public enum DialogConfigurationName {
 }
 public struct ShareDialogConfiguration {
   public init()
+  #if compiler(>=5.3) && $NonescapableTypes
   public var defaultShareMode: Swift.String? {
     get
   }
+  #endif
   public func shouldUseNativeDialog(forDialogName dialogName: Swift.String) -> Swift.Bool
   public func shouldUseSafariViewController(forDialogName dialogName: Swift.String) -> Swift.Bool
 }
@@ -550,11 +672,15 @@ public struct ShareDialogConfiguration {
 }
 @objc(FBSDKAEMReporter) public protocol _AEMReporterProtocol {
   @objc static func enable()
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc(recordAndUpdateEvent:currency:value:parameters:) static func recordAndUpdate(event: Swift.String, currency: Swift.String?, value: Foundation.NSNumber?, parameters: [Swift.String : Any]?)
+  #endif
   @objc static func setConversionFilteringEnabled(_ isEnabled: Swift.Bool)
   @objc static func setCatalogMatchingEnabled(_ isEnabled: Swift.Bool)
   @objc static func setAdvertiserRuleMatchInServerEnabled(_ isEnabled: Swift.Bool)
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc static func handle(_ url: Foundation.URL?)
+  #endif
 }
 extension FBAEMKit.AEMReporter : FBSDKCoreKit._AEMReporterProtocol {
 }
@@ -570,16 +696,32 @@ extension FBAEMKit.AEMReporter : FBSDKCoreKit._AEMReporterProtocol {
   @objc deinit
 }
 extension FBSDKCoreKit._BridgeAPI {
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc final public func applicationWillResignActive(_ application: UIKit.UIApplication?)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc final public func applicationDidBecomeActive(_ application: UIKit.UIApplication?)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc final public func applicationDidEnterBackground(_ application: UIKit.UIApplication?)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc final public func application(_ application: UIKit.UIApplication, open url: Foundation.URL, sourceApplication: Swift.String?, annotation: Any?) -> Swift.Bool
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc final public func application(_ application: UIKit.UIApplication, didFinishLaunchingWithOptions launchOptions: [UIKit.UIApplication.LaunchOptionsKey : Any]? = nil) -> Swift.Bool
+  #endif
 }
 extension FBSDKCoreKit._BridgeAPI {
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc final public func open(_ url: Foundation.URL, sender: (any FBSDKCoreKit.URLOpening)?, handler: @escaping FBSDKCoreKit.SuccessBlock)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc final public func open(_ request: any FBSDKCoreKit.BridgeAPIRequestProtocol, useSafariViewController: Swift.Bool, from fromViewController: UIKit.UIViewController?, completionBlock: @escaping FBSDKCoreKit.BridgeAPIResponseBlock)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc final public func openURLWithSafariViewController(url: Foundation.URL, sender: (any FBSDKCoreKit.URLOpening)?, from fromViewController: UIKit.UIViewController?, handler: @escaping FBSDKCoreKit.SuccessBlock)
+  #endif
 }
 extension FBSDKCoreKit._BridgeAPI {
   @objc final public func safariViewControllerDidFinish(_ safariViewController: SafariServices.SFSafariViewController)
@@ -589,14 +731,22 @@ extension FBSDKCoreKit._BridgeAPI : AuthenticationServices.ASWebAuthenticationPr
   @_Concurrency.MainActor @preconcurrency @objc final public func presentationAnchor(for session: AuthenticationServices.ASWebAuthenticationSession) -> AuthenticationServices.ASPresentationAnchor
 }
 @objcMembers @objc(FBSDKBridgeAPIProtocolNativeV1) final public class _BridgeAPIProtocolNativeV1 : ObjectiveC.NSObject, FBSDKCoreKit.BridgeAPIProtocol {
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc(initWithAppScheme:) convenience public init(appScheme: Swift.String?)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc(initWithAppScheme:pasteboard:dataLengthThreshold:includeAppIcon:) public init(appScheme: Swift.String?, pasteboard: (any FBSDKCoreKit._Pasteboard)?, dataLengthThreshold: Swift.UInt, shouldIncludeAppIcon: Swift.Bool)
+  #endif
   @objc deinit
   @objc final public func requestURL(actionID: Swift.String, scheme: Swift.String, methodName: Swift.String, parameters: [Swift.String : Any]) throws -> Foundation.URL
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc final public func responseParameters(actionID: Swift.String, queryParameters: [Swift.String : Any], cancelled cancelledRef: Swift.UnsafeMutablePointer<ObjectiveC.ObjCBool>?) throws -> [Swift.String : Any]
+  #endif
 }
 @_inheritsConvenienceInitializers @objcMembers @objc(FBSDKBridgeAPIRequestFactory) final public class _BridgeAPIRequestFactory : ObjectiveC.NSObject, FBSDKCoreKit.BridgeAPIRequestCreating {
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc final public func bridgeAPIRequest(with protocolType: FBSDKCoreKit.FBSDKBridgeAPIProtocolType, scheme: Swift.String, methodName: Swift.String?, parameters: [Swift.String : Any]?, userInfo: [Swift.String : Any]? = nil) -> (any FBSDKCoreKit.BridgeAPIRequestProtocol)?
+  #endif
   @objc override dynamic public init()
   @objc deinit
 }
@@ -606,23 +756,41 @@ extension FBSDKCoreKit._BridgeAPI : AuthenticationServices.ASWebAuthenticationPr
   @objc deinit
 }
 @_inheritsConvenienceInitializers @objc(FBSDKErrorFactory) final public class _ErrorFactory : ObjectiveC.NSObject, FBSDKCoreKit.ErrorCreating {
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc(errorWithCode:userInfo:message:underlyingError:) final public func error(code: Swift.Int, userInfo: [Swift.String : Any]? = nil, message: Swift.String?, underlyingError: (any Swift.Error)?) -> any Swift.Error
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc(errorWithDomain:code:userInfo:message:underlyingError:) final public func error(domain: Swift.String, code: Swift.Int, userInfo: [Swift.String : Any]? = nil, message: Swift.String?, underlyingError: (any Swift.Error)?) -> any Swift.Error
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc(invalidArgumentErrorWithName:value:message:underlyingError:) final public func invalidArgumentError(name: Swift.String, value: Any?, message: Swift.String?, underlyingError: (any Swift.Error)?) -> any Swift.Error
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc(invalidArgumentErrorWithDomain:name:value:message:underlyingError:) final public func invalidArgumentError(domain: Swift.String, name: Swift.String, value: Any?, message: Swift.String?, underlyingError: (any Swift.Error)?) -> any Swift.Error
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc(requiredArgumentErrorWithName:message:underlyingError:) final public func requiredArgumentError(name: Swift.String, message: Swift.String?, underlyingError: (any Swift.Error)?) -> any Swift.Error
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc(requiredArgumentErrorWithDomain:name:message:underlyingError:) final public func requiredArgumentError(domain: Swift.String, name: Swift.String, message: Swift.String?, underlyingError: (any Swift.Error)?) -> any Swift.Error
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc(unknownErrorWithMessage:userInfo:) final public func unknownError(message: Swift.String?, userInfo: [Swift.String : Any]? = nil) -> any Swift.Error
+  #endif
   @objc override dynamic public init()
   @objc deinit
 }
 @_inheritsConvenienceInitializers @objcMembers @objc(FBSDKCloseIcon) final public class _FBCloseIcon : ObjectiveC.NSObject {
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc final public func image(size: CoreFoundation.CGSize) -> UIKit.UIImage?
+  #endif
   @objc override dynamic public init()
   @objc deinit
 }
 @_inheritsConvenienceInitializers @objcMembers @objc(FBSDKLogo) final public class _FBLogo : FBSDKCoreKit.FBIcon {
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc override final public func path(with size: CoreFoundation.CGSize) -> CoreGraphics.CGPath?
+  #endif
   @objc override dynamic public init()
   @objc deinit
 }
@@ -635,7 +803,9 @@ extension FBSDKCoreKit._BridgeAPI : AuthenticationServices.ASWebAuthenticationPr
   @objc deinit
 }
 @_inheritsConvenienceInitializers @objcMembers @objc(FBSDKHumanSilhouetteIcon) final public class _HumanSilhouetteIcon : FBSDKCoreKit.FBIcon {
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc override final public func path(with size: CoreFoundation.CGSize) -> CoreGraphics.CGPath?
+  #endif
   @objc override dynamic public init()
   @objc deinit
 }
@@ -670,19 +840,25 @@ extension FBSDKCoreKit._PaymentObserver : StoreKit.SKPaymentTransactionObserver 
 @objcMembers @objc(FBSDKSKAdNetworkEvent) final public class _SKAdNetworkEvent : ObjectiveC.NSObject {
   @objc final public let eventName: Swift.String?
   @objc final public var values: [Swift.String : Swift.Double]?
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc(initWithJSON:) public init?(json: [Swift.String : Any])
+  #endif
   @objc deinit
 }
 @objcMembers @objc(FBSDKViewImpressionLogger) final public class _ViewImpressionLogger : ObjectiveC.NSObject, FBSDKCoreKit.ImpressionLogging {
   @objc(initWithEventName:) public init(eventName: FBSDKCoreKit.AppEvents.Name)
   @objc public static func retrieveLogger(with eventName: FBSDKCoreKit.AppEvents.Name) -> FBSDKCoreKit._ViewImpressionLogger
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc final public func logImpression(withIdentifier identifier: Swift.String, parameters: [FBSDKCoreKit.AppEvents.ParameterName : Any]?)
+  #endif
   @objc deinit
 }
 @objcMembers @objc(FBSDKWebDialog) final public class _WebDialog : ObjectiveC.NSObject {
   @objc final public var shouldDeferVisibility: Swift.Bool
   @objc weak final public var delegate: (any FBSDKCoreKit.WebDialogDelegate)?
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc public init(name: Swift.String, parameters: [Swift.String : Swift.String]?, webViewFrame: CoreFoundation.CGRect = .zero, path: Swift.String? = nil)
+  #endif
   @objc convenience public init(name: Swift.String)
   @objc final public func show()
   @objc deinit

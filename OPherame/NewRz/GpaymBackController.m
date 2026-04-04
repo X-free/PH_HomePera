@@ -141,9 +141,11 @@
     // 监听表格内容变化
     [self.tableView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
     
+    CGRect applyFrame = CGRectMake((UIScreen.mainScreen.bounds.size.width - 302)/2.0, self.view.bounds.size.height - 80, 302, 54);
+
     UIButton *applyButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    applyButton.frame = CGRectMake(61, self.view.bounds.size.height - 80, self.view.bounds.size.width - 122, 50);
-    [applyButton setTitle:@"Next step" forState:UIControlStateNormal];
+    applyButton.frame = applyFrame;
+    [applyButton setTitle:@"Next" forState:UIControlStateNormal];
     [applyButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     applyButton.titleLabel.font = [UIFont boldSystemFontOfSize:18];
     [applyButton setBackgroundImage:[UIImage imageNamed:@"bukath"] forState:(UIControlStateNormal)];

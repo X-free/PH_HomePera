@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1600"
+   LastUpgradeVersion = "1500"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "3AE57FC4CF27B0BC540B3112353377BF"
-               BuildableName = "MBProgressHUD.bundle"
-               BlueprintName = "MBProgressHUD-MBProgressHUD"
+               BlueprintIdentifier = "94CFBA7D633ECA58DF85C327B035E6A3"
+               BuildableName = "SDWebImage.bundle"
+               BlueprintName = "SDWebImage-SDWebImage"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

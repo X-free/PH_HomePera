@@ -268,8 +268,17 @@
                     @"latitude": @(coordinate.latitude),
                     @"longitude": @(coordinate.longitude)
                 };
-                
-                [[NSUserDefaults standardUserDefaults] setObject:@[country, countryCode, province, city, district, street, fullAddress, coordinateDict] forKey:@"savedCoordinate"];
+                // placemarks 为空或 error 时 country 等仍为 nil，NSArray 字面量不能含 nil
+                [[NSUserDefaults standardUserDefaults] setObject:@[
+                    country ?: @"",
+                    countryCode ?: @"",
+                    province ?: @"",
+                    city ?: @"",
+                    district ?: @"",
+                    street ?: @"",
+                    fullAddress ?: @"",
+                    coordinateDict
+                ] forKey:@"savedCoordinate"];
                 [[NSUserDefaults standardUserDefaults] synchronize];
                 
                 

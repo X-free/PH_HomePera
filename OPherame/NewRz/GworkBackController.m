@@ -64,6 +64,9 @@
         
         if([responseObject[@"heavy"] isEqualToString:@"0"]){
             self.dataArray = responseObject[@"thump"][@"haru"];
+            
+            NSLog(@"%@", self.dataArray);
+            
             [self.tableView reloadData];
         }else{
             [SHToast showWithText:responseObject[@"daughters"]];
